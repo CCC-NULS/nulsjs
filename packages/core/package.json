@@ -1,0 +1,32 @@
+{
+  "name": "@nuls/core",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "browser": "dist/index.browser.esm.js",
+  "react-native": "dist/index.mobile.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CCC-NULS/nulsjs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CCC-NULS/nulsjs.git/issues"
+  },
+  "homepage": "https://github.com/CCC-NULS/nulsjs.git#readme",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "peerDependencies": {
+  }
+}

@@ -5,3 +5,4 @@ config/config.json
 .rpt2_cache
 .DS_Store
 coverage/
+t.js

@@ -24,9 +24,14 @@
   },
   "homepage": "https://github.com/CCC-NULS/nulsjs.git#readme",
   "dependencies": {
+    "bs58": "^4.0.1",
+    "crypto-js": "^3.1.9-1",
+    "fetch-ponyfill": "^6.1.0",
+    "secp256k1": "^3.7.1"
   },
   "devDependencies": {
+    "@types/crypto-js": "^3.1.43",
+    "@types/secp256k1": "^3.5.0"
   },
-  "peerDependencies": {
-  }
+  "peerDependencies": {}
 }

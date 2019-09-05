@@ -1,3 +1,9 @@
 ---
 module:
   name: core
+api:
+  url: http://apitn1.nulscan.io
+  base: /
+  timeout: 8000
+  rpc:
+    base: /

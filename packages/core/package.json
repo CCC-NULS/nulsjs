@@ -1,5 +1,5 @@
 {
-  "name": "@nuls/core",
+  "name": "@nuls.io/core",
   "version": "0.0.0",
   "description": "",
   "main": "dist/index.cjs.js",
@@ -17,7 +17,11 @@
     "type": "git",
     "url": "git+https://github.com/CCC-NULS/nulsjs.git"
   },
-  "author": "",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "author": "Angelillou <amalcaraz89@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/CCC-NULS/nulsjs.git/issues"
@@ -32,6 +36,5 @@
   "devDependencies": {
     "@types/crypto-js": "^3.1.43",
     "@types/secp256k1": "^3.5.0"
-  },
-  "peerDependencies": {}
+  }
 }

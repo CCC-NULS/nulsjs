@@ -1,8 +1,8 @@
 import 'jest'
 import {Account} from '../account'
-import {createECKeyPair, Address} from '@nuls/core'
+import {createECKeyPair, Address} from '@nuls.io/core'
 
-jest.mock('@nuls/core')
+jest.mock('@nuls.io/core')
 
 describe('nuls/account/index', () => {
   it('should create a new account with default parameters', () => {

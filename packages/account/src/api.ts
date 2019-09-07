@@ -1,4 +1,4 @@
-import {RpcApiService, ChainId, ApiServiceConfig} from '@nuls/core'
+import {RpcApiService, ChainId, ApiServiceConfig} from '@nuls.io/core'
 
 export interface AccountBalance {
   totalBalance: number

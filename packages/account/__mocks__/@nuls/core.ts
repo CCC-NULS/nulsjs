@@ -4,4 +4,4 @@ export const Address = {
 }
 export const encryptAES = jest.fn()
 
-export const {ChainId, AddressType} = jest.requireActual('@nuls/core')
+export const {ChainId, AddressType} = jest.requireActual('@nuls.io/core')

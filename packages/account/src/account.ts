@@ -9,7 +9,7 @@ import {
   decryptAES,
   Address,
   ApiServiceConfig,
-} from '@nuls/core'
+} from '@nuls.io/core'
 import {AccountApi, AccountBalance} from './api'
 
 export interface AccountInfo {

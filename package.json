@@ -5,7 +5,7 @@
     "bootstrap": "lerna bootstrap --force-local",
     "build:rollup": "lerna exec -- rollup -c=../../rollup.config.js",
     "build:ts": "lerna exec -- tsc -p ./tsconfig.json",
-    "build": "concurrently \"npm run build:rollup\" \"npm run build:ts\"",
+    "build": "npm run clean:dist && concurrently \"npm run build:rollup\" \"npm run build:ts\"",
     "pwd": "lerna exec -- pwd",
     "watch:rollup": "lerna exec --parallel -- rollup -w -c=../../rollup.config.js",
     "watch:ts": "lerna exec --parallel -- tsc -w -p ./tsconfig.json",
@@ -21,7 +21,8 @@
     "test:ci": "npm run test -- --ci --watchAll=false --coverage",
     "lint": "eslint --ignore-path .gitignore './packages/**/src/**/*.{js,ts,tsx}'",
     "lint:fix": "npm run lint -- --fix --quiet",
-    "clean": "lerna clean && find ./packages -name 'dist' -exec rm -rf '{}' +",
+    "clean:dist": "find ./packages -name 'dist' -exec rm -rf '{}' +",
+    "clean": "lerna clean && npm run clean:dist",
     "postinstall": "npm run bootstrap && npm run build"
   },
   "husky": {

@@ -4,8 +4,7 @@
   "description": "",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
-  "browser": "dist/index.browser.esm.js",
-  "react-native": "dist/index.mobile.esm.js",
+  "react-native": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist/"

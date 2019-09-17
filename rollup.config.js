@@ -1,7 +1,7 @@
 import typescript from 'rollup-plugin-typescript2'
 import json from 'rollup-plugin-json'
 import yaml from 'rollup-plugin-yaml'
-import { terser } from 'rollup-plugin-terser'
+import {terser} from 'rollup-plugin-terser'
 import autoExternal from 'rollup-plugin-auto-external'
 import path from 'path'
 import fs from 'fs'
@@ -12,11 +12,11 @@ import globals from 'rollup-plugin-node-globals'
 import multiEntry from 'rollup-plugin-multi-entry'
 import resolve from 'rollup-plugin-node-resolve'
 
-const { LERNA_PACKAGE_NAME, NODE_ENV } = process.env
+const {LERNA_PACKAGE_NAME, NODE_ENV} = process.env
 const PACKAGE_ROOT_PATH = process.cwd()
 const OUTPUT_DIR = path.join(PACKAGE_ROOT_PATH, 'dist')
 const PKG_JSON = JSON.parse(
-  fs.readFileSync(path.join(PACKAGE_ROOT_PATH, 'package.json'))
+  fs.readFileSync(path.join(PACKAGE_ROOT_PATH, 'package.json')),
 )
 const IS_PROD = NODE_ENV === 'production'
 // const packagesPath = `${LERNA_ROOT_PATH}/packages`
@@ -42,7 +42,7 @@ const isBrowser = bundle => bundle === '.mobile'
 
 export default entries
   .filter(([bundle]) =>
-    fs.existsSync(path.join(PACKAGE_ROOT_PATH, `src/index${bundle}.ts`))
+    fs.existsSync(path.join(PACKAGE_ROOT_PATH, `src/index${bundle}.ts`)),
   )
   .reduce(
     (prev, [bundle, formats]) => [
@@ -96,5 +96,5 @@ export default entries
         },
       })),
     ],
-    []
+    [],
   )

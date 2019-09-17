@@ -62,10 +62,13 @@ export class Account {
 
   public static async getBalance(
     address: string,
-    chainId: ChainId = ChainId.Mainnet,
+    chainId?: ChainId,
     assetId: number = 1,
     config?: ApiServiceConfig,
   ): Promise<AccountBalance> {
+    if (!chainId) {
+      chainId = Address.fromString(address).chainId
+    }
     return new AccountApi(config).getBalance(address, chainId, assetId)
   }
 

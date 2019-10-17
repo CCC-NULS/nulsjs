@@ -2,8 +2,10 @@
 module:
   name: core
 api:
-  url: http://apitn1.nulscan.io
+  # url: https://public1.nuls.io
+  url: http://beta.nulscan.io
   base: /
   timeout: 8000
+  maxPagesize: 1000
   rpc:
-    base: /
+    base: /api/

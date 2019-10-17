@@ -1,0 +1,4 @@
+---
+module:
+  name: account
+  blocksMinedTimeout: 10

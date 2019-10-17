@@ -13,6 +13,21 @@ export class Address {
   public prefix?: string
   public address!: string
 
+  public static fromBytes(bytes: Buffer): Address {
+    const addr = new Address()
+    addr.chainId = bytes.readUInt16LE(0)
+    addr.type = bytes.readUInt8(2)
+    addr.publicKeyHash = bytes.slice(3)
+    addr.prefix = this.getPrefix(addr.chainId)
+    addr.address = this.getAddressString(
+      addr.chainId,
+      addr.type,
+      addr.publicKeyHash,
+      addr.prefix,
+    )
+    return addr
+  }
+
   public static from(
     chainId: ChainId,
     type: AddressType,
@@ -172,7 +187,22 @@ export class Address {
     return prefix + bs58Encode(addressBytesWithXor)
   }
 
-  public toString() {
+  public constructor(address?: string) {
+    if (address) {
+      const addr = Address.fromString(address)
+      this.chainId = addr.chainId
+      this.type = addr.type
+      this.publicKeyHash = addr.publicKeyHash
+      this.prefix = addr.prefix
+      this.address = addr.address
+    }
+  }
+
+  public toBytes(): Buffer {
+    return Address.getAddressBytes(this.chainId, this.type, this.publicKeyHash)
+  }
+
+  public toString(): string {
     return this.address
   }
 }

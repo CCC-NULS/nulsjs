@@ -23,7 +23,7 @@ export function signEC(data: Buffer, privateKey: Buffer): Buffer
 export function signEC(data: Buffer, privateKey: string | Buffer): Buffer {
   const privateKeyBuf = getKeyAsBuffer(privateKey)
   const {signature} = secp256k1.sign(data, privateKeyBuf)
-  return signature
+  return secp256k1.signatureExport(signature)
 }
 
 export function verifyEC(data: Buffer, sign: Buffer, publicKey: string): boolean
@@ -34,7 +34,8 @@ export function verifyEC(
   publicKey: string | Buffer,
 ): boolean {
   const publicKeyBuf = getKeyAsBuffer(publicKey)
-  return secp256k1.verify(data, sign, publicKeyBuf)
+  const signature = secp256k1.signatureImport(sign)
+  return secp256k1.verify(data, signature, publicKeyBuf)
 }
 
 export function createECKeyPair(): ECKeyPair {

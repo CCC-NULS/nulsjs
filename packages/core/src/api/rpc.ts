@@ -7,13 +7,16 @@ import {
 import cfg from '../../config.yaml'
 import {ChainId} from '../common'
 
+type RpcParam = string | number | boolean
+
 export class RpcApiService extends ApiServiceBase {
   protected static defaultConfig: DefaultApiServiceConfig = {
     url: cfg.api.url,
     apiBase: cfg.api.rpc.base,
+    maxPagesize: cfg.api.maxPagesize,
   }
 
-  protected config!: DefaultApiServiceConfig
+  public config!: DefaultApiServiceConfig
   protected id: number = 0
   protected version: string = '2.0'
 
@@ -23,7 +26,7 @@ export class RpcApiService extends ApiServiceBase {
 
   public async call(
     method: string,
-    params: (string | number)[],
+    params: RpcParam[],
     chainId: ChainId = ChainId.Mainnet,
   ): Promise<CommonResponseBody> {
     const url = `${this.config.url}${this.config.apiBase}`
@@ -42,7 +45,7 @@ export class RpcApiService extends ApiServiceBase {
 
   private getDefaultBody(
     method: string,
-    params: (string | number)[],
+    params: RpcParam[],
     chainId: ChainId = ChainId.Mainnet,
   ) {
     const id = this.id++

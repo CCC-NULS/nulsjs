@@ -21,9 +21,10 @@
     "test:ci": "npm run test -- --ci --watchAll=false --coverage",
     "lint": "eslint --ignore-path .gitignore './packages/**/src/**/*.{js,ts,tsx}'",
     "lint:fix": "npm run lint -- --fix --quiet",
-    "clean:dist": "find ./packages -name 'dist' -exec rm -rf '{}' +",
+    "clean:dist": "find ./packages -type d -name 'dist' -maxdepth 2 -exec rm -rf '{}' +",
     "clean": "lerna clean && npm run clean:dist",
-    "postinstall": "npm run bootstrap && npm run build"
+    "postinstall": "npm run bootstrap && npm run build",
+    "restart": "npm run clean && npm run bootstrap && npm run link && npm run build && npm run dev"
   },
   "husky": {
     "hooks": {

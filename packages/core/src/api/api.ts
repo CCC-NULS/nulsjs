@@ -9,12 +9,14 @@ export interface ApiServiceConfig {
   url?: string
   apiBase?: string
   timeout?: number
+  maxPagesize?: number
   endpoints?: ApiServiceConfigEndpoints
 }
 
 export interface DefaultApiServiceConfig extends ApiServiceConfig {
   url: string
   apiBase: string
+  maxPagesize: number
 }
 
 export interface CommonSuccessResponseBody {
@@ -32,9 +34,10 @@ export type CommonResponseBody =
   | CommonErrorResponseBody
 
 export abstract class ApiServiceBase {
-  protected config: DefaultApiServiceConfig = {
+  public config: DefaultApiServiceConfig = {
     url: cfg.api.url,
     apiBase: cfg.api.base,
+    maxPagesize: cfg.api.maxPagesize,
   }
 
   public constructor(config: ApiServiceConfig) {

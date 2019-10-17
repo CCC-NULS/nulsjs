@@ -17,4 +17,9 @@ describe('nuls/core/address', () => {
     )
     expect(address.address).toBe(expectedAddress)
   })
+
+  it('Address.fromStringV1() should generate a valid v2 address form an v1 address string', () => {
+    const addressV2 = Address.fromStringV1('NsdvprVBQbZLRnXPKiZFBzUbgnnHqi3d')
+    expect(addressV2.address).toBe('NULSd6HgWaHQwRadfbxn2CFsGppG6ysyqML6m')
+  })
 })

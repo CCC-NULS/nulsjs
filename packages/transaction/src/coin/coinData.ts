@@ -43,7 +43,6 @@ export class CoinData {
 
     // console.log("===> ", serial.toBuffer().toString('hex'))
 
-
     serial.writeVarintNum(this._outputs.length)
     for (let i = 0; i < this._outputs.length; i++) {
       serial.write(this._outputs[i].toBytes())

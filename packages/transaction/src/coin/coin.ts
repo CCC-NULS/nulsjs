@@ -1,4 +1,10 @@
-import {NulsSerializer, ChainId, Address, ApiServiceConfig, NulsParser} from '@nuls.io/core'
+import {
+  NulsSerializer,
+  ChainId,
+  Address,
+  ApiServiceConfig,
+  NulsParser,
+} from '@nuls.io/core'
 import {Account, AccountBalance} from '@nuls.io/account'
 
 export type CoinObject = CoinInputObject | CoinOutputObject

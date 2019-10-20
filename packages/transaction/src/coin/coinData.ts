@@ -105,6 +105,16 @@ export class CoinData {
     return this._outputs
   }
 
+  public resetInputs(): CoinInput[] {
+    this.inputs([])
+    return this._inputs
+  }
+
+  public resetOutputs(): CoinOutput[] {
+    this.outputs([])
+    return this._outputs
+  }
+
   public removeInput(index?: number): void
   public removeInput(item?: CoinInput): void
   public removeInput(arg: number | CoinInput | undefined): void {

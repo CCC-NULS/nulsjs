@@ -29,7 +29,7 @@ export class Coin {
   public constructor(
     public _address: string,
     public _chainId: ChainId,
-    public _assetsId: number,
+    public _assetId: number,
     public _amount: number,
   ) {}
 
@@ -52,7 +52,7 @@ export class Coin {
     return new NulsSerializer()
       .writeBytesWithLength(addressBytes)
       .writeUInt16LE(this._chainId)
-      .writeUInt16LE(this._assetsId)
+      .writeUInt16LE(this._assetId)
       .writeBigInt(this._amount)
       .toBuffer()
   }
@@ -61,7 +61,7 @@ export class Coin {
     return {
       address: this._address,
       assetsChainId: this._chainId,
-      assetsId: this._assetsId,
+      assetsId: this._assetId,
       amount: this._amount,
     }
   }
@@ -82,10 +82,22 @@ export class CoinInput extends Coin {
     public _nonce: string,
     public _locked: number,
     public _chainId: ChainId,
-    public _assetsId: number,
+    public _assetId: number,
     public _balance?: number,
   ) {
-    super(_address, _chainId, _assetsId, _amount)
+    super(_address, _chainId, _assetId, _amount)
+  }
+
+  public static clone(i: CoinInput): CoinInput {
+    return new CoinInput(
+      i._address,
+      i._amount,
+      i._nonce,
+      i._locked,
+      i._chainId,
+      i._assetId,
+      i._balance,
+    )
   }
 
   public static fromBytes(bytes: Buffer | NulsParser): CoinInput {
@@ -102,7 +114,7 @@ export class CoinInput extends Coin {
       nonce,
       locked,
       coin._chainId,
-      coin._assetsId,
+      coin._assetId,
     )
   }
 
@@ -132,10 +144,10 @@ export class CoinInput extends Coin {
       return this._balance
     }
 
-    const balance = await Account.getBalance(
+    const balance: AccountBalance = await Account.getBalance(
       this._address,
       this._chainId,
-      this._assetsId,
+      this._assetId,
       config,
     )
 
@@ -153,9 +165,19 @@ export class CoinOutput extends Coin {
     public _amount: number,
     public _lockTime: number,
     public _chainId: ChainId,
-    public _assetsId: number,
+    public _assetId: number,
   ) {
-    super(_address, _chainId, _assetsId, _amount)
+    super(_address, _chainId, _assetId, _amount)
+  }
+
+  public static clone(o: CoinOutput): CoinOutput {
+    return new CoinOutput(
+      o._address,
+      o._amount,
+      o._lockTime,
+      o._chainId,
+      o._assetId,
+    )
   }
 
   public static fromBytes(bytes: Buffer | NulsParser): CoinOutput {
@@ -169,7 +191,7 @@ export class CoinOutput extends Coin {
       coin._amount,
       lockTime,
       coin._chainId,
-      coin._assetsId,
+      coin._assetId,
     )
   }
 

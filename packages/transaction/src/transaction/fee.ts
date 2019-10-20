@@ -4,9 +4,9 @@ const KB = 1024
 
 export function getTxFee(
   txSize: number,
-  signsCount: number,
   price: number = MIN_FEE_PRICE_1024_BYTES,
+  minFee: number = price,
 ) {
-  txSize += signsCount * 110
-  return price * Math.ceil(txSize / KB)
+  // txSize += signsCount * 110 => varBuffer 106bytes + [1-4]bytes
+  return Math.max(minFee, price * Math.ceil(txSize / KB))
 }

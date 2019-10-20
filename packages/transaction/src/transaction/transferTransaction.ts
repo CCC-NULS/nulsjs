@@ -13,6 +13,19 @@ export class TransferTransaction extends BaseTransaction {
   protected _txData = null
   protected _feePrice = MIN_FEE_PRICE_1024_BYTES
 
+  public from(address: string, amount?: number, assetId?: number): this {
+    return this.addInput(address, amount, assetId)
+  }
+
+  public to(
+    address: string,
+    amount?: number,
+    lockTime?: number,
+    assetId?: number,
+  ): this {
+    return this.addOutput(address, amount, lockTime, assetId)
+  }
+
   public async toObject(): Promise<TransactionObject> {
     const obj = await super.toObject()
     obj.txData = null

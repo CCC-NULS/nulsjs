@@ -8,13 +8,11 @@ import {
   signEC,
   ApiServiceConfig,
   Address,
-  verifyEC,
 } from '@nuls.io/core'
 import {CoinData, CoinDataObject} from '../coin/coinData'
 import PromiEvent from 'promievent'
 import {TransactionApi} from '../api'
 import {MIN_FEE_PRICE_1024_BYTES, getTxFee} from './fee'
-import {Account} from '@nuls.io/account'
 import {CoinInput, CoinOutput} from '../coin/coin'
 import cfg from '../../config.yaml'
 
@@ -72,6 +70,9 @@ export abstract class BaseTransaction {
   protected _blockHeight: number = -1
   protected _blockVersion: number = BlockVersion.NotDefined
 
+  protected _tmpInputs: CoinInput[] = []
+  protected _tmpOutputs: CoinOutput[] = []
+
   protected _feePrice = MIN_FEE_PRICE_1024_BYTES
   protected _systemTx: boolean = false
   protected _extraFee: number = 0
@@ -107,11 +108,6 @@ export abstract class BaseTransaction {
     this._blockHeight = blockHeight
     this._blockVersion = blockVersion
     this.config(config)
-  }
-
-  private await<T, R extends T | Promise<T>>(fn: () => R): Promise<T> {
-    this._p = this._p.then(fn)
-    return this._p as Promise<T>
   }
 
   public async toBytes(): Promise<Buffer> {
@@ -169,65 +165,8 @@ export abstract class BaseTransaction {
   public fee(amount: number): this {
     this.await(async () => {
       this._extraFee = amount
-      await this._recalculateInputs()
+      await this._recalculateInputsAndOutputs()
     })
-    return this
-  }
-
-  public from(address: string, amount: number, assetId: number = 1): this {
-    this.await(async () => {
-      const addr: Address = Address.fromString(address)
-
-      const balance = await Account.getBalance(
-        address,
-        addr.chainId,
-        assetId,
-        this._config.api,
-      )
-
-      console.log(balance)
-
-      if (this._config.safeCheck && balance.balance < amount + this._feePrice) {
-        throw new Error('Insufficient input balance')
-      }
-
-      const input = new CoinInput(
-        address,
-        amount + this._feePrice,
-        balance.nonce,
-        balance.timeLock || 0,
-        addr.chainId,
-        assetId,
-        balance.balance,
-      )
-      this._coinData.addInput(input)
-
-      await this._recalculateInputs()
-    })
-
-    return this
-  }
-
-  public to(
-    address: string,
-    amount: number,
-    lockTime: number = 0,
-    assetId: number = 1,
-  ): this {
-    this.await(async () => {
-      const addr: Address = Address.fromString(address)
-      const output = new CoinOutput(
-        address,
-        amount,
-        lockTime,
-        addr.chainId,
-        assetId,
-      )
-      this._coinData.addOutput(output)
-
-      await this._recalculateInputs()
-    })
-
     return this
   }
 
@@ -267,6 +206,10 @@ export abstract class BaseTransaction {
 
   public async serialize(): Promise<TransactionHex> {
     return this.await(() => this._serialize())
+  }
+
+  public async calculateFee(): Promise<number> {
+    return this.await(() => this._calculateFee())
   }
 
   public send(config?: TransactionConfig): PromiEvent<TransactionReceipt> {
@@ -337,10 +280,19 @@ export abstract class BaseTransaction {
     return pe
   }
 
-  public _serialize(): TransactionHex {
-    this._validate()
-    const bytes = this._toBytes()
-    return bytes.toString('hex')
+  protected addInput(address: string, amount?: number, assetId?: number): this {
+    this.await(() => this._addInput(address, amount, assetId))
+    return this
+  }
+
+  protected addOutput(
+    address: string,
+    amount?: number,
+    lockTime?: number,
+    assetId?: number,
+  ): this {
+    this.await(() => this._addOutput(address, amount, lockTime, assetId))
+    return this
   }
 
   protected _getHash(): Buffer {
@@ -390,6 +342,12 @@ export abstract class BaseTransaction {
     return true
   }
 
+  protected _serialize(): TransactionHex {
+    this._validate()
+    const bytes = this._toBytes()
+    return bytes.toString('hex')
+  }
+
   protected _toBytes(): Buffer {
     return new NulsSerializer()
       .writeUInt16LE(this._type)
@@ -420,15 +378,148 @@ export abstract class BaseTransaction {
     return bytes.length
   }
 
-  protected _calculateFee(
-    signature: number = this._signature.length > 0 ? 1 : 0,
-  ): number {
+  protected _calculateFee(): number {
     const size = this._size()
-    const fee = getTxFee(size, signature, this._feePrice)
-    return Math.max(fee, this._feePrice) + this._extraFee
+    const fee = getTxFee(size, this._feePrice)
+    return Math.max(fee, this._extraFee)
+  }
+
+  protected async _addInput(
+    address: string,
+    amount: number = -1,
+    assetId: number = 1,
+  ): Promise<void> {
+    // If input already exists, just remove previous and add the new one
+    const inputIdx = this._tmpInputs.findIndex(
+      input => input._address === address && input._assetId === assetId,
+    )
+    if (inputIdx >= 0) {
+      this._tmpInputs.splice(inputIdx, 1)
+    }
+
+    const addr: Address = Address.fromString(address)
+
+    const tmpInput = new CoinInput(
+      address,
+      amount,
+      '',
+      0,
+      addr.chainId,
+      assetId,
+    )
+    await tmpInput.getBalance()
+    this._tmpInputs.push(tmpInput)
+
+    await this._recalculateInputsAndOutputs()
+  }
+
+  protected async _addOutput(
+    address: string,
+    amount: number = -1,
+    lockTime: number = 0,
+    assetId: number = 1,
+  ): Promise<void> {
+    // If input already exists, just remove previous and add the new one
+    const outputIdx = this._tmpOutputs.findIndex(
+      output => output._address === address && output._assetId === assetId,
+    )
+    if (outputIdx >= 0) {
+      this._tmpOutputs.splice(outputIdx, 1)
+    }
+
+    const addr: Address = Address.fromString(address)
+    const output = new CoinOutput(
+      address,
+      amount,
+      lockTime,
+      addr.chainId,
+      assetId,
+    )
+    this._tmpOutputs.push(output)
+
+    await this._recalculateInputsAndOutputs()
+  }
+
+  protected async _recalculateInputsAndOutputs(): Promise<void> {
+    await this._recalculateOutputs()
+    await this._recalculateInputs()
+  }
+
+  protected async _recalculateOutputs(): Promise<void> {
+    this._coinData.resetOutputs()
+    const outputs = this._tmpOutputs
+
+    const outputRest = outputs.find(output => output._amount < 0)
+    const outputsNotRest = outputs.filter(output => output._amount > 0)
+    let outputAmount = outputsNotRest.reduce(
+      (value, output) => value + output._amount,
+      0,
+    )
+    this._coinData.outputs(outputsNotRest)
+
+    // Todo: Think about copy data instead of sharing memory for outputs
+    // for (let output of outputsNotRest) {
+    //   const newOutput = CoinOutput.clone(output)
+    //   this._coinData.addOutput(newOutput)
+    // }
+
+    if (outputRest) {
+      const newOutput = CoinOutput.clone(outputRest)
+      newOutput._amount = Number.MAX_SAFE_INTEGER
+      this._coinData.addOutput(newOutput)
+
+      await this._recalculateInputs()
+
+      const inputValue = this._coinData.getInputsValue() - outputAmount
+      if (inputValue > 0) {
+        const fee = this._calculateFee()
+        newOutput._amount = inputValue - fee
+
+        if (newOutput._amount <= 0) {
+          throw new Error('Not enough balance to make the transaction')
+        }
+
+        await this._recalculateInputs()
+      }
+    }
   }
 
   protected async _recalculateInputs(): Promise<void> {
+    let outputValue = this._coinData.getOutputsValue()
+
+    if (outputValue > 0) {
+      this._coinData.resetInputs()
+      const inputs = this._tmpInputs
+
+      for (let input of inputs) {
+        const balance = await input.getBalance()
+        const inputAmount = input._amount < 0 ? balance : input._amount
+
+        if (this._config.safeCheck && balance < inputAmount) {
+          throw new Error('Insufficient input balance')
+        }
+
+        let newAmount = Math.min(outputValue, inputAmount)
+        outputValue -= newAmount
+
+        const newInput = CoinInput.clone(input)
+        newInput._amount = newAmount
+
+        this._coinData.addInput(newInput)
+
+        if (outputValue <= 0) {
+          break
+        }
+      }
+
+      // If we have had enough input amount to pay outputs
+      if (outputValue <= 0) {
+        await this._recalculateFee()
+      }
+    }
+  }
+
+  protected async _recalculateFee(): Promise<void> {
     let actualFee = this._getFee()
     const newFee = this._calculateFee()
 
@@ -449,9 +540,29 @@ export abstract class BaseTransaction {
         }
       }
 
-      if (actualFee < newFee) {
-        throw new Error('Not enough balance for paying fees')
+      // If we have more inputs, we can add them for paying fees
+      if (actualFee < newFee && inputs.length < this._tmpInputs.length) {
+        for (let i = inputs.length; i < this._tmpInputs.length; i++) {
+          const input = this._tmpInputs[i]
+
+          const balance = await input.getBalance()
+          const availableBalance = balance
+          const neededBalance = newFee - actualFee
+
+          let sum = Math.min(availableBalance, neededBalance)
+          actualFee += sum
+          input._amount += sum
+
+          if (actualFee >= newFee) {
+            break
+          }
+        }
       }
     }
+  }
+
+  protected await<T, R extends T | Promise<T>>(fn: () => R): Promise<T> {
+    this._p = this._p.then(fn)
+    return this._p as Promise<T>
   }
 }

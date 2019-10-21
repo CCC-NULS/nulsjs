@@ -15,6 +15,7 @@ import {TransactionApi} from '../api'
 import {MIN_FEE_PRICE_1024_BYTES, getTxFee} from './fee'
 import {CoinInput, CoinOutput} from '../coin/coin'
 import cfg from '../../config.yaml'
+import {TxDataObject, BaseTxData} from './txData/baseTxData'
 
 // eslint-disable-next-line @typescript-eslint/no-use-before-define
 export type TransactionStaticClass = typeof BaseTransaction
@@ -64,7 +65,7 @@ export abstract class BaseTransaction {
   protected _type!: TransactionType
   protected _time: number = Math.floor(Date.now() / 1000)
   protected _remark: string = ''
-  protected _txData!: any
+  protected _txData!: BaseTxData
   protected _coinData: CoinData = new CoinData()
   protected _signature: Buffer = Buffer.from([])
   protected _blockHeight: number = -1
@@ -91,7 +92,9 @@ export abstract class BaseTransaction {
     tx._type = parser.read(2)
     tx._time = parser.read(4)
     tx._remark = parser.readString()
-    tx._txData = parser.readBytesWithLength()
+
+    const txDataBytes = parser.readBytesWithLength()
+    tx._txData.fromBytes(txDataBytes)
 
     const coinDataBytes = parser.readBytesWithLength()
     tx._coinData = CoinData.fromBytes(coinDataBytes)
@@ -116,6 +119,7 @@ export abstract class BaseTransaction {
 
   public async toObject(): Promise<TransactionObject> {
     return this.await(async () => {
+      const txData: TxDataObject = this._txData.toObject()
       const coinData: CoinDataObject = this._coinData.toObject()
       const hash = this._getHash()
 
@@ -125,7 +129,7 @@ export abstract class BaseTransaction {
         blockHeight: this._blockHeight,
         time: this._time,
         remark: this._remark,
-        txData: this._txData, // TODO: Implement in each transaction kind
+        txData,
         coinData,
         signature: this._signature.toString('hex'),
       }
@@ -308,7 +312,7 @@ export abstract class BaseTransaction {
 
   protected _validate(): boolean {
     if (this._config.safeCheck) {
-      if (this._txData === undefined) {
+      if (!this._txData) {
         throw new Error('Transaction data is not filled')
       }
 
@@ -353,7 +357,7 @@ export abstract class BaseTransaction {
       .writeUInt16LE(this._type)
       .writeUInt32LE(this._time)
       .writeString(this._remark)
-      .writeBytesWithLength(this._txData)
+      .writeBytesWithLength(this._txData.toBytes())
       .writeBytesWithLength(this._coinData.toBytes())
       .writeBytesWithLength(this._signature)
       .toBuffer()
@@ -364,7 +368,7 @@ export abstract class BaseTransaction {
       .writeUInt16LE(this._type)
       .writeUInt32LE(this._time)
       .writeString(this._remark)
-      .writeBytesWithLength(this._txData)
+      .writeBytesWithLength(this._txData.toBytes())
       .writeBytesWithLength(this._coinData.toBytes())
       .toBuffer()
   }
@@ -388,7 +392,7 @@ export abstract class BaseTransaction {
     address: string,
     amount: number = -1,
     assetId: number = 1,
-  ): Promise<void> {
+  ): Promise<CoinInput> {
     // If input already exists, just remove previous and add the new one
     const inputIdx = this._tmpInputs.findIndex(
       input => input._address === address && input._assetId === assetId,
@@ -411,6 +415,7 @@ export abstract class BaseTransaction {
     this._tmpInputs.push(tmpInput)
 
     await this._recalculateInputsAndOutputs()
+    return tmpInput
   }
 
   protected async _addOutput(
@@ -418,26 +423,30 @@ export abstract class BaseTransaction {
     amount: number = -1,
     lockTime: number = 0,
     assetId: number = 1,
-  ): Promise<void> {
+  ): Promise<CoinOutput> {
     // If input already exists, just remove previous and add the new one
     const outputIdx = this._tmpOutputs.findIndex(
-      output => output._address === address && output._assetId === assetId,
+      output =>
+        output._address === address &&
+        output._assetId === assetId &&
+        output._lockTime === lockTime,
     )
     if (outputIdx >= 0) {
       this._tmpOutputs.splice(outputIdx, 1)
     }
 
     const addr: Address = Address.fromString(address)
-    const output = new CoinOutput(
+    const tmpOutput = new CoinOutput(
       address,
       amount,
       lockTime,
       addr.chainId,
       assetId,
     )
-    this._tmpOutputs.push(output)
+    this._tmpOutputs.push(tmpOutput)
 
     await this._recalculateInputsAndOutputs()
+    return tmpOutput
   }
 
   protected async _recalculateInputsAndOutputs(): Promise<void> {

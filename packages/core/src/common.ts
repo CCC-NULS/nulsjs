@@ -18,6 +18,11 @@ export const ChainIdPrefix: Record<ChainId, string> = {
   [ChainId.Testnet]: 'tNULS',
 }
 
+export const BlackHoleAddress = {
+  [ChainId.Mainnet]: 'NULSd6HgWSU1iR6BfNoQi85mAMT52JMFzpnok',
+  [ChainId.Testnet]: 'tNULSeBaMhZnRteniCy3UZqPjTbnWKBPHX1a5d',
+}
+
 export enum BlockVersion {
   NotDefined = -1,
   FirstVersion = 1,

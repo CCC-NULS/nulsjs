@@ -28,3 +28,6 @@ export enum BlockVersion {
   FirstVersion = 1,
   SmartContracts = 2,
 }
+
+export const addressLength = 23
+export const hashLength = 32

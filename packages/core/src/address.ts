@@ -1,4 +1,10 @@
-import {ChainId, ChainIdPrefix, V1ChainIdType, ChainIdV1ToV2} from './common'
+import {
+  ChainId,
+  ChainIdPrefix,
+  V1ChainIdType,
+  ChainIdV1ToV2,
+  addressLength,
+} from './common'
 import {bs58Encode, bs58Decode, ripemd160, sha256} from './crypto/hash'
 
 export enum AddressType {
@@ -12,6 +18,8 @@ export class Address {
   public publicKeyHash!: Buffer
   public prefix?: string
   public address!: string
+
+  public static bytesLength = addressLength
 
   public static fromBytes(bytes: Buffer): Address {
     const addr = new Address()

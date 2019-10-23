@@ -1,6 +1,9 @@
 import BN from 'bn.js'
+import {Address} from './address'
+import {hashLength} from './common'
 
 export class NulsParser {
+  protected static addressLength = Address.bytesLength
   protected static placeholder = 0x00
 
   protected offset: number = 0
@@ -45,6 +48,28 @@ export class NulsParser {
   public readString(): string {
     const bytes = this.readBytesWithLength()
     return bytes.toString('utf8')
+  }
+
+  public readAddress(): string {
+    const buf = this.buf.slice(
+      this.offset,
+      this.offset + NulsParser.addressLength,
+    )
+    const address = Address.fromBytes(buf).address
+    this.offset += NulsParser.addressLength
+    return address
+  }
+
+  public readAddressWithLength(): string {
+    const bytes = this.readBytesWithLength()
+    return Address.fromBytes(bytes).address
+  }
+
+  public readHash(): string {
+    const buf = this.buf.slice(this.offset, this.offset + hashLength)
+    const hash = buf.toString('hex')
+    this.offset += hashLength
+    return hash
   }
 
   public readBoolean(): boolean {

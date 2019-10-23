@@ -1,6 +1,8 @@
 import BN from 'bn.js'
+import {Address} from './address'
 
 export class NulsSerializer {
+  protected static addressLength = Address.bytesLength
   protected static placeholder = Buffer.from([0x00])
 
   protected size: number = 0
@@ -14,9 +16,24 @@ export class NulsSerializer {
     return this.write(bytes)
   }
 
-  public writeString(str: string = '') {
-    const buf = Buffer.from(str, 'utf8')
+  public writeString(str: string = '', enc: BufferEncoding = 'utf-8') {
+    const buf = Buffer.from(str, enc)
     return this.writeBytesWithLength(buf)
+  }
+
+  public writeAddress(address: string) {
+    const addressBytes = Address.fromString(address).toBytes()
+    return this.write(addressBytes)
+  }
+
+  public writeAddressWithLength(address: string) {
+    const addressBytes = Address.fromString(address).toBytes()
+    return this.writeBytesWithLength(addressBytes)
+  }
+
+  public writeHash(hash: string) {
+    const buf = Buffer.from(hash, 'hex')
+    return this.write(buf)
   }
 
   public writeBoolean(v: boolean) {

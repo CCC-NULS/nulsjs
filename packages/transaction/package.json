@@ -1,6 +1,6 @@
 {
   "name": "@nuls.io/transaction",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -27,8 +27,8 @@
   },
   "homepage": "https://github.com/CCC-NULS/nulsjs.git#readme",
   "dependencies": {
-    "@nuls.io/core": "^0.0.1",
-    "@nuls.io/account": "^0.0.1",
+    "@nuls.io/account": "^0.0.2",
+    "@nuls.io/core": "^0.0.2",
     "promievent": "^0.1.3"
   }
 }

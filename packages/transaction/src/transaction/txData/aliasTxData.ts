@@ -1,5 +1,5 @@
 import {BaseTxData} from './baseTxData'
-import {NulsSerializer, Address, NulsParser} from '@nuls.io/core'
+import {NulsSerializer, NulsParser} from '@nuls.io/core'
 
 export interface AliasTxDataObject {
   address: string
@@ -13,15 +13,8 @@ export class AliasTxData extends BaseTxData {
 
   public fromBytes(bytes: Buffer): AliasTxData {
     const parser = new NulsParser(bytes)
-
-    const addressBytes = parser.readBytesWithLength()
-    const address = Address.fromBytes(addressBytes).address
-
-    const alias = parser.readString()
-
-    this._address = address
-    this._alias = alias
-
+    this._address = parser.readAddressWithLength()
+    this._alias = parser.readString()
     return this
   }
 
@@ -33,10 +26,8 @@ export class AliasTxData extends BaseTxData {
   }
 
   public toBytes(): Buffer {
-    const addressBytes = Address.fromString(this._address).toBytes()
-
     return new NulsSerializer()
-      .writeBytesWithLength(addressBytes)
+      .writeAddressWithLength(this._address)
       .writeString(this._alias)
       .toBuffer()
   }

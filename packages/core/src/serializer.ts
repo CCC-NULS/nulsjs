@@ -1,8 +1,9 @@
 import BN from 'bn.js'
 import {Address} from './address'
+import {addressLength} from './common'
 
 export class NulsSerializer {
-  protected static addressLength = Address.bytesLength
+  protected static addressLength = addressLength
   protected static placeholder = Buffer.from([0x00])
 
   protected size: number = 0

@@ -1,9 +1,9 @@
 import BN from 'bn.js'
 import {Address} from './address'
-import {hashLength} from './common'
+import {hashLength, addressLength} from './common'
 
 export class NulsParser {
-  protected static addressLength = Address.bytesLength
+  protected static addressLength = addressLength
   protected static placeholder = 0x00
 
   protected offset: number = 0

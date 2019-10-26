@@ -4,6 +4,7 @@ import {
   BlackHoleAddress,
   Address,
   isValidAddress,
+  aliasTxAmount,
 } from '@nuls.io/core'
 import {MIN_FEE_PRICE_1024_BYTES} from './fee'
 import {AliasTxData} from './txData/aliasTxData'
@@ -14,18 +15,16 @@ export interface AliasTransactionObject extends TransactionObject {
 
 export class AliasTransaction extends BaseTransaction {
   protected static className = AliasTransaction
+  protected static AliasAmount = aliasTxAmount
 
   protected _type = TransactionType.AccountAlias
   protected _txData: AliasTxData = new AliasTxData()
   protected _feePrice = MIN_FEE_PRICE_1024_BYTES
 
-  private static AliasNa = 100000000
-
   public from(address: string, blackHoleAddress?: string): this {
     this.await(async () => {
       this._txData._address = address
-      await this._setBlackHoleOutput(blackHoleAddress)
-      await this._updateInputs()
+      await this._updateInputsAndOutput(blackHoleAddress)
     })
     return this
   }
@@ -49,22 +48,15 @@ export class AliasTransaction extends BaseTransaction {
     return super._validate()
   }
 
-  protected async _updateInputs() {
+  protected async _updateInputsAndOutput(blackHoleAddress?: string) {
     if (!this._txData._address) {
       return
     }
-    this._tmpInputs = []
-    await this._addInput(this._txData._address, AliasTransaction.AliasNa)
-  }
 
-  protected async _setBlackHoleOutput(blackHoleAddress?: string) {
+    this._tmpInputs = []
     this._tmpOutputs = []
 
     if (!blackHoleAddress) {
-      if (!this._txData._address) {
-        return
-      }
-
       const addr: Address = Address.fromString(this._txData._address)
       blackHoleAddress = BlackHoleAddress[addr.chainId]
 
@@ -73,6 +65,8 @@ export class AliasTransaction extends BaseTransaction {
       }
     }
 
-    await this._addOutput(blackHoleAddress, AliasTransaction.AliasNa)
+    await this._addOutput(blackHoleAddress, AliasTransaction.AliasAmount)
+
+    await this._addInput(this._txData._address, AliasTransaction.AliasAmount)
   }
 }

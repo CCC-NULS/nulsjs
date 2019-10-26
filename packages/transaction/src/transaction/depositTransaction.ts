@@ -4,6 +4,7 @@ import {
   isValidAddress,
   isValidHash,
   nulsToNa,
+  consensusLocktime,
 } from '@nuls.io/core'
 import {MIN_FEE_PRICE_1024_BYTES} from './fee'
 import {DepositTxData} from './txData/depositTxData'
@@ -14,18 +15,16 @@ export interface DepositTransactionObject extends TransactionObject {
 
 export class DepositTransaction extends BaseTransaction {
   protected static className = DepositTransaction
+  protected static ConsensusLocktime = consensusLocktime
 
   protected _type = TransactionType.AgentDeposit
   protected _txData: DepositTxData = new DepositTxData()
   protected _feePrice = MIN_FEE_PRICE_1024_BYTES
 
-  private static ConsensusLocktime = -1
-
   public from(address: string): this {
     this.await(async () => {
       this._txData._address = address
-      await this._updateOutputs()
-      await this._updateInputs()
+      await this._updateInputsAndOutputs()
     })
     return this
   }
@@ -33,8 +32,7 @@ export class DepositTransaction extends BaseTransaction {
   public deposit(deposit: number): this {
     this.await(async () => {
       this._txData._deposit = deposit
-      await this._updateOutputs()
-      await this._updateInputs()
+      await this._updateInputsAndOutputs()
     })
     return this
   }
@@ -66,20 +64,12 @@ export class DepositTransaction extends BaseTransaction {
     return super._validate()
   }
 
-  protected async _updateInputs() {
+  protected async _updateInputsAndOutputs() {
     if (!this._txData._address || !this._txData._deposit) {
       return
     }
 
     this._tmpInputs = []
-    await this._addInput(this._txData._address, this._txData._deposit)
-  }
-
-  protected async _updateOutputs() {
-    if (!this._txData._address || !this._txData._deposit) {
-      return
-    }
-
     this._tmpOutputs = []
 
     await this._addOutput(
@@ -87,5 +77,7 @@ export class DepositTransaction extends BaseTransaction {
       this._txData._deposit,
       DepositTransaction.ConsensusLocktime,
     )
+
+    await this._addInput(this._txData._address, this._txData._deposit)
   }
 }

@@ -4,8 +4,9 @@ import {
   ApiServiceConfig,
   CommonNulsApiListResponse,
   CommonSuccessResponseBody,
+  TransactionType,
 } from '@nuls.io/core'
-import {CommonTxListItem} from './model'
+import {CommonTxListItem, TxInfo} from './model'
 
 export interface ValidateTxResponse {
   value: string
@@ -25,6 +26,11 @@ export interface TransactionListResponse extends CommonSuccessResponseBody {
   data: TransactionListResponseData
 }
 
+export interface TransactionResponse extends CommonSuccessResponseBody {
+  ok: true
+  data: TxInfo
+}
+
 export class TransactionApi {
   public constructor(
     config?: ApiServiceConfig,
@@ -33,7 +39,7 @@ export class TransactionApi {
 
   public async getTransactions(
     chainId: ChainId,
-    type: number = 0,
+    type: TransactionType = 0,
     pageNumber: number = 1,
     pageSize: number = this._rpc.config.maxPagesize,
     isHiddenRewards: boolean = false,
@@ -43,6 +49,15 @@ export class TransactionApi {
       [pageNumber, pageSize, type, isHiddenRewards],
       chainId,
     ) as Promise<TransactionListResponse>
+  }
+
+  public async getTransaction(
+    chainId: ChainId,
+    txHash: string,
+  ): Promise<TransactionResponse> {
+    return this._rpc.call('getTx', [txHash], chainId) as Promise<
+      TransactionResponse
+    >
   }
 
   public async validateTransaction(

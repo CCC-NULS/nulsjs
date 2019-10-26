@@ -38,7 +38,7 @@ export class NulsSerializer {
   }
 
   public writeBoolean(v: boolean) {
-    return this.writeUInt8(v ? 1 : 0)
+    return this.writeInt8(v ? 1 : 0)
   }
 
   public writeBigInt(n: number | BN) {
@@ -67,9 +67,9 @@ export class NulsSerializer {
     return this
   }
 
-  public writeUInt8(n: number) {
+  public writeInt8(n: number) {
     const buf = Buffer.allocUnsafe(1)
-    buf.writeUInt8(n, 0)
+    buf.writeInt8(n, 0)
     return this.write(buf)
   }
 
@@ -103,13 +103,13 @@ export class NulsSerializer {
     return this.write(buf)
   }
 
-  public writeUInt64BE(n: number | BN) {
+  public writeInt64BE(n: number | BN) {
     n = n instanceof BN ? n : new BN(n + '')
     const buf = n.toBuffer('be', 8)
     return this.write(buf)
   }
 
-  public writeUInt64LE(n: number | BN) {
+  public writeInt64LE(n: number | BN) {
     n = n instanceof BN ? n : new BN(n + '')
     const buf = n.toBuffer('le', 8)
     return this.write(buf)
@@ -137,8 +137,8 @@ export class NulsSerializer {
       buf.writeUInt32LE(n, 1)
     } else {
       const s = new NulsSerializer()
-      s.writeUInt8(255)
-      s.writeUInt64LE(new BN(n + ''))
+      s.writeInt8(255)
+      s.writeInt64LE(new BN(n + ''))
       buf = s.concat()
       // buf = Buffer.allocUnsafe(1 + 8)
       // buf.writeUInt8(255, 0)

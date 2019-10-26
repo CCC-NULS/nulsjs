@@ -39,8 +39,8 @@ export class Coin {
     const addressBytes = parser.readBytesWithLength()
     const address = Address.fromBytes(addressBytes).address
 
-    const chainId = parser.read(2)
-    const assetsId = parser.read(2)
+    const chainId = parser.readUInt(2)
+    const assetsId = parser.readUInt(2)
     const amount = parser.readBigInt().toNumber()
 
     return new Coin(address, chainId, assetsId, amount)
@@ -83,7 +83,7 @@ export class CoinInput extends Coin {
     public _locked: number,
     public _chainId: ChainId,
     public _assetId: number,
-    public _balance?: number,
+    public _balance?: AccountBalance,
   ) {
     super(_address, _chainId, _assetId, _amount)
   }
@@ -106,7 +106,7 @@ export class CoinInput extends Coin {
     const coin = Coin.fromBytes(parser)
     const nonceBytes = parser.readBytesWithLength()
     const nonce = nonceBytes.toString('hex')
-    const locked = parser.read(1)
+    const locked = parser.readInt(1)
 
     return new CoinInput(
       coin._address,
@@ -125,7 +125,7 @@ export class CoinInput extends Coin {
     return new NulsSerializer()
       .write(coinBytes)
       .writeBytesWithLength(nonceBytes)
-      .writeUInt8(this._locked)
+      .writeInt8(this._locked)
       .toBuffer()
   }
 
@@ -139,7 +139,7 @@ export class CoinInput extends Coin {
     }
   }
 
-  public async getBalance(config?: ApiServiceConfig): Promise<number> {
+  public async getBalance(config?: ApiServiceConfig): Promise<AccountBalance> {
     if (this._balance !== undefined) {
       return this._balance
     }
@@ -151,9 +151,8 @@ export class CoinInput extends Coin {
       config,
     )
 
-    this._balance = balance.balance
-    this._nonce = balance.nonce
-    this._locked = balance.timeLock || 0
+    this._balance = balance
+    this._nonce = this._nonce || balance.nonce
 
     return this._balance
   }
@@ -184,7 +183,7 @@ export class CoinOutput extends Coin {
     const parser = bytes instanceof NulsParser ? bytes : new NulsParser(bytes)
 
     const coin = Coin.fromBytes(parser)
-    const lockTime = parser.readUInt64LE().toNumber()
+    const lockTime = parser.readInt64LE().toNumber()
 
     return new CoinOutput(
       coin._address,
@@ -200,13 +199,7 @@ export class CoinOutput extends Coin {
 
     const serial = new NulsSerializer().write(coinBytes)
 
-    if (this._lockTime === -1) {
-      serial.write(Buffer.from('ffffffffffffffffff', 'hex'))
-    } else {
-      serial.writeUInt64LE(this._lockTime)
-    }
-
-    return serial.toBuffer()
+    return serial.writeInt64LE(this._lockTime).toBuffer()
   }
 
   public toObject(): CoinOutputObject {

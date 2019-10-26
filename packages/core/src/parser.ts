@@ -32,13 +32,26 @@ export class NulsParser {
     return bytes
   }
 
-  public read(count: number, endian: 'le' | 'be' = 'le'): number {
+  public readUInt(count: number, endian: 'le' | 'be' = 'le'): number {
     let res
 
     if (endian === 'le') {
       res = this.buf.readUIntLE(this.offset, count)
     } else {
       res = this.buf.readUIntBE(this.offset, count)
+    }
+
+    this.offset += count
+    return res
+  }
+
+  public readInt(count: number, endian: 'le' | 'be' = 'le'): number {
+    let res
+
+    if (endian === 'le') {
+      res = this.buf.readIntLE(this.offset, count)
+    } else {
+      res = this.buf.readIntBE(this.offset, count)
     }
 
     this.offset += count
@@ -73,7 +86,7 @@ export class NulsParser {
   }
 
   public readBoolean(): boolean {
-    const n = this.read(1)
+    const n = this.readUInt(1)
     return !!n
   }
 
@@ -89,13 +102,13 @@ export class NulsParser {
     return n
   }
 
-  public readUInt64BE(): BN {
+  public readInt64BE(): BN {
     const buf = this.buf.slice(this.offset, this.offset + 8).reverse()
     this.offset += 8
     return new BN(buf, 10, 'be')
   }
 
-  public readUInt64LE(): BN {
+  public readInt64LE(): BN {
     const buf = this.buf.slice(this.offset, this.offset + 8)
     this.offset += 8
     return new BN(buf, 10, 'le')
@@ -113,16 +126,17 @@ export class NulsParser {
   }
 
   public readVarintNum(): number | BN {
-    let n = this.read(1)
+    let n = this.readUInt(1)
+    this.offset--
 
     if (n < 253) {
-      return n
+      return this.readUInt(1)
     } else if (n < 0x10000) {
-      return this.read(2)
+      return this.readUInt(2)
     } else if (n < 0x100000000) {
-      return this.read(4)
+      return this.readUInt(4)
     } else {
-      return this.readUInt64LE()
+      return this.readInt64LE()
     }
   }
 }

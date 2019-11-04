@@ -8,7 +8,6 @@ import {
   signEC,
   ApiServiceConfig,
   Address,
-  ChainId,
 } from '@nuls.io/core'
 import {CoinData, CoinDataObject} from '../coin/coinData'
 import PromiEvent from 'promievent'
@@ -39,13 +38,11 @@ export type TransactionHex = string
 
 export interface TransactionConfig {
   api?: ApiServiceConfig
-  chainId?: ChainId
   safeCheck?: boolean
   blocksMinedTimeout?: number
 }
 
 export interface DefaultTransactionConfig extends TransactionConfig {
-  chainId: ChainId
   safeCheck: boolean
   blocksMinedTimeout: number
 }
@@ -81,7 +78,6 @@ export abstract class BaseTransaction {
   protected _systemTx: boolean = false
   protected _extraFee: number = 0
   protected _config: DefaultTransactionConfig = {
-    chainId: ChainId.Mainnet,
     safeCheck: true,
     blocksMinedTimeout: cfg.blocksMinedTimeout,
   }
@@ -116,7 +112,10 @@ export abstract class BaseTransaction {
   ) {
     this._blockHeight = blockHeight
     this._blockVersion = blockVersion
-    this.config(config)
+    this._config = {
+      ...this._config,
+      ...config,
+    }
     this._txApi = txApi || new TransactionApi(this._config.api)
   }
 
@@ -145,18 +144,6 @@ export abstract class BaseTransaction {
 
   public getType(): TransactionType {
     return this._type
-  }
-
-  public async config(config?: TransactionConfig): Promise<this> {
-    return this.await(() => {
-      if (config) {
-        this._config = {
-          ...this._config,
-          ...config,
-        }
-      }
-      return this
-    })
   }
 
   public time(time: number): this {
@@ -231,10 +218,9 @@ export abstract class BaseTransaction {
     if (this._signature.length === 0) {
       throw new Error('The transaction is not signed')
     }
-    const chainId = this._coinData.getInputs()[0]._chainId
     const txHex: TransactionHex = this._serialize()
 
-    const {value} = await this._txApi.validateTransaction(chainId, txHex)
+    const {value} = await this._txApi.validateTransaction(txHex)
     return value
   }
 
@@ -246,15 +232,12 @@ export abstract class BaseTransaction {
         }
 
         // const blockApi = new BlockApi(this._config.api)
-        const chainId = this._coinData.getInputs()[0]._chainId
         const txHex: TransactionHex = this._serialize()
 
         // let firstHeight = -1
         // const subscription = blockApi.subscribe()
 
-        // const {value} = await txApi.validateTransaction(chainId, txHex)
-
-        const {hash} = await this._txApi.broadcast(chainId, txHex)
+        const {hash} = await this._txApi.broadcast(txHex)
         pe.emit('txHash', hash)
         resolve(hash)
 

@@ -31,5 +31,6 @@ export enum BlockVersion {
 
 export const addressLength = 23
 export const hashLength = 32
+export const ecKeyLength = 32
 export const consensusLocktime = -1
 export const aliasTxAmount = 100000000

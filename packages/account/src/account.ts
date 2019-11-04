@@ -9,6 +9,7 @@ import {
   decryptAES,
   Address,
   ApiServiceConfig,
+  ecKeyLength,
 } from '@nuls.io/core'
 import {AccountApi, AccountBalance} from './api'
 
@@ -45,8 +46,12 @@ export class Account {
   ): Account {
     let privateKeyBuff = Buffer.from(privateKey, 'hex')
 
-    if (password) {
-      privateKeyBuff = decryptAES(privateKeyBuff, password)
+    if (privateKeyBuff.length !== ecKeyLength) {
+      if (password) {
+        privateKeyBuff = decryptAES(privateKeyBuff, password)
+      } else {
+        throw new Error('Invalid private key')
+      }
     }
 
     const publicKey = deriveECPublicKey(privateKeyBuff)
@@ -62,14 +67,11 @@ export class Account {
 
   public static async getBalance(
     address: string,
-    chainId?: ChainId,
     assetId: number = 1,
     config?: ApiServiceConfig,
   ): Promise<AccountBalance> {
-    if (!chainId) {
-      chainId = Address.fromString(address).chainId
-    }
-    return new AccountApi(config).getBalance(address, chainId, assetId)
+    const chainId = Address.fromString(address).chainId
+    return new AccountApi({...config, chainId}).getBalance(address, assetId)
   }
 
   private static generateAccount(
@@ -104,7 +106,7 @@ export class Account {
     assetId: number = 1,
     config?: ApiServiceConfig,
   ): Promise<AccountBalance> {
-    return Account.getBalance(this.address, this.chainId, assetId, config)
+    return Account.getBalance(this.address, assetId, config)
   }
 
   public toObject(): AccountInfo {
@@ -116,7 +118,7 @@ export class Account {
     }
 
     if (this.encrypted) {
-      accountInfo.encryptedPrivateKey = this.privateKey.toString().toLowerCase()
+      accountInfo.encryptedPrivateKey = this.privateKey.toString('hex')
       delete accountInfo.privateKey
     }
 

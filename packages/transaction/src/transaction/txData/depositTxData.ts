@@ -4,14 +4,14 @@ import {NulsSerializer, NulsParser} from '@nuls.io/core'
 export interface DepositTxDataObject {
   deposit: number
   address: string
-  agentHash: string
+  nodeHash: string
 }
 
 export class DepositTxData extends BaseTxData {
   public constructor(
     public _deposit: number = 0,
     public _address: string = '',
-    public _agentHash: string = '',
+    public _nodeHash: string = '',
   ) {
     super()
   }
@@ -20,7 +20,7 @@ export class DepositTxData extends BaseTxData {
     const parser = new NulsParser(bytes)
     this._deposit = parser.readBigInt().toNumber()
     this._address = parser.readAddress()
-    this._agentHash = parser.readHash()
+    this._nodeHash = parser.readHash()
     return this
   }
 
@@ -28,7 +28,7 @@ export class DepositTxData extends BaseTxData {
     return {
       deposit: this._deposit,
       address: this._address,
-      agentHash: this._agentHash,
+      nodeHash: this._nodeHash,
     }
   }
 
@@ -36,7 +36,7 @@ export class DepositTxData extends BaseTxData {
     return new NulsSerializer()
       .writeBigInt(this._deposit)
       .writeAddress(this._address)
-      .writeHash(this._agentHash)
+      .writeHash(this._nodeHash)
       .toBuffer()
   }
 }

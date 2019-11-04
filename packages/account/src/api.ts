@@ -1,4 +1,4 @@
-import {RpcApiService, ChainId, ApiServiceConfig} from '@nuls.io/core'
+import {RpcApiService, ApiServiceConfig} from '@nuls.io/core'
 
 export interface AccountBalance {
   totalBalance: number
@@ -22,14 +22,13 @@ export class AccountApi {
 
   public async getBalance(
     address: string,
-    chainId: ChainId,
     assetId: number,
   ): Promise<AccountBalance> {
-    const res = await this._rpc.call(
-      'getAccountBalance',
-      [chainId, assetId, address],
-      chainId,
-    )
+    const res = await this._rpc.call('getAccountBalance', [
+      this._rpc.config.chainId,
+      assetId,
+      address,
+    ])
     if (res.ok) {
       return res.data
     } else {

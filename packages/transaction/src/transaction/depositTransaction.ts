@@ -17,7 +17,7 @@ export class DepositTransaction extends BaseTransaction {
   protected static className = DepositTransaction
   protected static ConsensusLocktime = consensusLocktime
 
-  protected _type = TransactionType.AgentDeposit
+  protected _type = TransactionType.NodeDeposit
   protected _txData: DepositTxData = new DepositTxData()
   protected _feePrice = MIN_FEE_PRICE_1024_BYTES
 
@@ -37,17 +37,17 @@ export class DepositTransaction extends BaseTransaction {
     return this
   }
 
-  public agent(hash: string): this {
+  public node(hash: string): this {
     this.await(async () => {
-      this._txData._agentHash = hash
+      this._txData._nodeHash = hash
     })
     return this
   }
 
   protected _validate(): boolean {
     if (this._config.safeCheck) {
-      if (!isValidHash(this._txData._agentHash)) {
-        throw new Error('Invalid agentHash')
+      if (!isValidHash(this._txData._nodeHash)) {
+        throw new Error('Invalid nodeHash')
       }
 
       if (!isValidAddress(this._txData._address)) {

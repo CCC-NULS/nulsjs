@@ -1,5 +1,6 @@
 import fetchPonyfill from 'fetch-ponyfill'
 import cfg from '../../config.yaml'
+import {ChainId} from '../common'
 
 const {fetch} = fetchPonyfill()
 
@@ -9,6 +10,7 @@ export interface ApiServiceConfig {
   url?: string
   apiBase?: string
   timeout?: number
+  chainId?: ChainId
   maxPagesize?: number
   endpoints?: ApiServiceConfigEndpoints
 }
@@ -16,6 +18,7 @@ export interface ApiServiceConfig {
 export interface DefaultApiServiceConfig extends ApiServiceConfig {
   url: string
   apiBase: string
+  chainId: ChainId
   maxPagesize: number
 }
 
@@ -37,6 +40,7 @@ export abstract class ApiServiceBase {
   public config: DefaultApiServiceConfig = {
     url: cfg.api.url,
     apiBase: cfg.api.base,
+    chainId: ChainId.Mainnet,
     maxPagesize: cfg.api.maxPagesize,
   }
 

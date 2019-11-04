@@ -90,27 +90,22 @@ export class BlockApi {
   ) {}
 
   public async getBlockHeaders(
-    chainId: ChainId,
     packingAddress: string = '',
     pageNumber: number = 1,
     pageSize: number = this._rpc.config.maxPagesize,
     isHiddenRewards: boolean = false,
   ): Promise<BlockHeaderListResponse> {
-    return this._rpc.call(
-      'getBlockHeaderList',
-      [pageNumber, pageSize, isHiddenRewards, packingAddress],
-      chainId,
-    ) as Promise<BlockHeaderListResponse>
+    return this._rpc.call('getBlockHeaderList', [
+      pageNumber,
+      pageSize,
+      isHiddenRewards,
+      packingAddress,
+    ]) as Promise<BlockHeaderListResponse>
   }
 
-  public async getBlock(
-    chainId: ChainId,
-    blockHeight: number,
-  ): Promise<BlockResponse> {
-    return this._rpc.call(
-      'getBlockByHeight',
-      [blockHeight],
-      chainId,
-    ) as Promise<BlockResponse>
+  public async getBlock(blockHeight: number): Promise<BlockResponse> {
+    return this._rpc.call('getBlockByHeight', [blockHeight]) as Promise<
+      BlockResponse
+    >
   }
 }

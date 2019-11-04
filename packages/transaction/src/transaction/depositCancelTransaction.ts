@@ -11,7 +11,7 @@ export class DepositCancelTransaction extends BaseTransaction {
   protected static className = DepositCancelTransaction
   protected static ConsensusLocktime = consensusLocktime
 
-  protected _type = TransactionType.AgentDepositCancel
+  protected _type = TransactionType.NodeDepositCancel
   protected _txData: DepositCancelTxData = new DepositCancelTxData()
   protected _feePrice = MIN_FEE_PRICE_1024_BYTES
 
@@ -41,7 +41,6 @@ export class DepositCancelTransaction extends BaseTransaction {
     this._clearInputsAndOutputs()
 
     const {ok, data} = await this._txApi.getTransaction(
-      this._config.chainId,
       this._txData._depositHash,
     )
 

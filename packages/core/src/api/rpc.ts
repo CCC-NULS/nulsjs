@@ -13,6 +13,7 @@ export class RpcApiService extends ApiServiceBase {
   protected static defaultConfig: DefaultApiServiceConfig = {
     url: cfg.api.url,
     apiBase: cfg.api.rpc.base,
+    chainId: ChainId.Mainnet,
     maxPagesize: cfg.api.maxPagesize,
   }
 
@@ -27,10 +28,9 @@ export class RpcApiService extends ApiServiceBase {
   public async call(
     method: string,
     params: RpcParam[],
-    chainId: ChainId = ChainId.Mainnet,
   ): Promise<CommonResponseBody> {
     const url = `${this.config.url}${this.config.apiBase}`
-    const body = this.getDefaultBody(method, params, chainId)
+    const body = this.getDefaultBody(method, params, this.config.chainId)
     const res = await this._post(url, body)
     if (res.ok) {
       if (res.data.error) {

@@ -13,6 +13,7 @@
     "link": "lerna link --force-local",
     "link:npm": "lerna exec --concurrency 1 -- npm link",
     "build:prod": "export NODE_ENV=production && npm run build",
+    "version": "lerna version",
     "publish": "npm run build:prod && lerna publish",
     "publish:ci": "npm run build:prod && lerna publish from-git --yes",
     "publish:force": "npm run build:prod && lerna publish --force-publish=*",

@@ -27,6 +27,9 @@ cache: npm
 
 install:
   - npm install
+  - npm run bootstrap
+
+script:
 
 jobs:
   include:
@@ -37,24 +40,27 @@ jobs:
       script: npm run test:ci
 
     - stage: build
-      script: npm run build
+      script: npm run build:prod
 
     - stage: docs deploy
       if: branch = master
       script: npm run docs:build
       deploy:
         provider: pages
-        skip-cleanup: true
-        keep-history: true
-        github-token: $GITHUB_KEY
+        skip_cleanup: true
+        keep_history: true
+        github_token: $GITHUB_TOKEN
         local_dir: docs/.vuepress/dist
-        target-branch: master
+        target_branch: gh-pages
 
-    # - stage: npm deploy
-    #   if: branch = master    
-    #   deploy:
-    #     provider: npm
-    #     api_key: $NPM_KEY
+    - stage: npm deploy
+      if: branch = master
+      before_deploy:
+        - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> $HOME/.npmrc 2> /dev/null
+      deploy:
+        provider: script
+        script: npm run publish:ci
+        skip_cleanup: true
 
 notifications:
   email: false

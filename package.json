@@ -14,6 +14,7 @@
     "link:npm": "lerna exec --concurrency 1 -- npm link",
     "build:prod": "export NODE_ENV=production && npm run build",
     "publish": "npm run build:prod && lerna publish",
+    "publish:ci": "npm run build:prod && lerna publish from-git --yes",
     "publish:force": "npm run build:prod && lerna publish --force-publish=*",
     "dev": "npm run watch",
     "test": "jest",

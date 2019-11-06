@@ -1,5 +1,5 @@
 module.exports = {
-  base: '/',
+  base: '/nulsjs/',
   title: 'NULS SDK',
   description: 'Interact with the NULS Blockchain in JavaScript',
   themeConfig: {

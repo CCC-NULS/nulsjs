@@ -55,12 +55,16 @@ jobs:
 
     - stage: npm deploy
       if: branch = master
+      script: echo "Deploying to npm"
       before_deploy:
         - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> $HOME/.npmrc 2> /dev/null
       deploy:
         provider: script
         script: npm run publish:ci
         skip_cleanup: true
+        on:
+          branch: master
+          tags: true
 
 notifications:
   email: false

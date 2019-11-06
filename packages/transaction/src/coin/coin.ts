@@ -146,7 +146,6 @@ export class CoinInput extends Coin {
 
     const balance: AccountBalance = await Account.getBalance(
       this._address,
-      this._chainId,
       this._assetId,
       config,
     )

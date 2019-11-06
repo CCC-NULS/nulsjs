@@ -414,7 +414,7 @@ export abstract class BaseTransaction {
       addr.chainId,
       assetId,
     )
-    await tmpInput.getBalance()
+    await tmpInput.getBalance(this._config.api)
     this._tmpInputs.push(tmpInput)
 
     await this._recalculateInputsAndOutputs()
@@ -518,7 +518,7 @@ export abstract class BaseTransaction {
       const inputs = this._tmpInputs
 
       for (let input of inputs) {
-        const balanceData = await input.getBalance()
+        const balanceData = await input.getBalance(this._config.api)
         const balance =
           input._locked === -1 ? balanceData.freeze : balanceData.balance
         const inputAmount = input._amount < 0 ? balance : input._amount
@@ -572,7 +572,7 @@ export abstract class BaseTransaction {
     acumFee: number,
   ) {
     for (let input of inputs) {
-      const balanceData = await input.getBalance()
+      const balanceData = await input.getBalance(this._config.api)
       const balance =
         input._locked === -1 ? balanceData.freeze : balanceData.balance
 

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Account package | NULS SDK</title>
+    <meta name="description" content="Interact with the NULS Blockchain in JavaScript">
+    
+    
+    <link rel="preload" href="/assets/css/0.styles.a9ce6b5a.css" as="style"><link rel="preload" href="/assets/js/app.d33a93c4.js" as="script"><link rel="preload" href="/assets/js/2.ad99787b.js" as="script"><link rel="preload" href="/assets/js/7.d0de8275.js" as="script"><link rel="prefetch" href="/assets/js/10.45eb6cfb.js"><link rel="prefetch" href="/assets/js/11.e7f7b31b.js"><link rel="prefetch" href="/assets/js/12.c4b65715.js"><link rel="prefetch" href="/assets/js/13.2ab56cc1.js"><link rel="prefetch" href="/assets/js/14.610fa14c.js"><link rel="prefetch" href="/assets/js/15.bce5e87a.js"><link rel="prefetch" href="/assets/js/3.0e414cba.js"><link rel="prefetch" href="/assets/js/4.f7de82a7.js"><link rel="prefetch" href="/assets/js/5.4e31a545.js"><link rel="prefetch" href="/assets/js/6.d9676ec6.js"><link rel="prefetch" href="/assets/js/8.b511ce82.js"><link rel="prefetch" href="/assets/js/9.f34e919f.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.a9ce6b5a.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.png" alt="NULS SDK" class="logo"> <span class="site-name can-hide">NULS SDK</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">Home</a></div><div class="nav-item"><a href="/guide/" class="nav-link router-link-active">Guide</a></div><div class="nav-item"><a href="https://CCC-NULS.github.io/nuls-js" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  v1.x
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <a href="https://github.com/CCC-NULS/nulsjs" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">Home</a></div><div class="nav-item"><a href="/guide/" class="nav-link router-link-active">Guide</a></div><div class="nav-item"><a href="https://CCC-NULS.github.io/nuls-js" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  v1.x
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <a href="https://github.com/CCC-NULS/nulsjs" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><a href="/guide/" class="sidebar-link">Getting Started</a></li><li><a href="/guide/core/" class="sidebar-link">Core</a></li><li><a href="/guide/account/" class="active sidebar-link">Account</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/guide/account/#account-class" class="sidebar-link">Account class</a></li><li class="sidebar-sub-header"><a href="/guide/account/#create-a-new-account" class="sidebar-link">Create a new account</a></li><li class="sidebar-sub-header"><a href="/guide/account/#import-an-account" class="sidebar-link">Import an account</a></li><li class="sidebar-sub-header"><a href="/guide/account/#address-type-and-chainid" class="sidebar-link">Address Type and ChainId</a></li></ul></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Transaction</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="account-package"><a href="#account-package" class="header-anchor">#</a> Account package</h1> <p>The account package contains all the necessary to handle account generation, importing, decryption and encryption.</p> <h2 id="account-class"><a href="#account-class" class="header-anchor">#</a> Account class</h2> <p>This class represents a full account of the NULS blockchain. By default the standard account <strong>address type</strong> is <code>1 (Default)</code> and the <strong>chain id</strong> is <code>1 (Mainnet)</code>. You can change these arguments yourself by providing them as parameters, read <a href="#address-type-and-chainid">Address Type and ChainId</a></p> <h4 id="quick-start"><a href="#quick-start" class="header-anchor">#</a> Quick Start</h4> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span>ChainId<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@nuls.io/core'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span>Account<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@nuls.io/account'</span>
+
+<span class="token keyword">const</span> fooAccount <span class="token operator">=</span> account<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// Creates an account</span>
+<span class="token keyword">const</span> barAccount <span class="token operator">=</span> account<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>ChainId<span class="token punctuation">.</span>Mainnet<span class="token punctuation">,</span> <span class="token constant">PASSWORD</span><span class="token punctuation">)</span> <span class="token comment">// Creates an account with a password</span>
+
+<span class="token keyword">const</span> fooAccount <span class="token operator">=</span> account<span class="token punctuation">.</span><span class="token function">import</span><span class="token punctuation">(</span><span class="token constant">PLAIN_TEXT_PRIVATE_KEY</span><span class="token punctuation">)</span> <span class="token comment">// Imports a plain text private key</span>
+<span class="token keyword">const</span> barAccount <span class="token operator">=</span> account<span class="token punctuation">.</span><span class="token function">import</span><span class="token punctuation">(</span><span class="token constant">PLAIN_TEXT_PRIVATE_KEY</span><span class="token punctuation">,</span> ChainId<span class="token punctuation">.</span>Mainnet<span class="token punctuation">,</span> <span class="token constant">PASSWORD</span><span class="token punctuation">)</span> <span class="token comment">// Imports a plain text private key and encrypts it</span>
+<span class="token keyword">const</span> flobAccount <span class="token operator">=</span> account<span class="token punctuation">.</span><span class="token function">import</span><span class="token punctuation">(</span><span class="token constant">ENCRYPTED_PRIVATE_KEY</span><span class="token punctuation">,</span> ChainId<span class="token punctuation">.</span>Mainnet<span class="token punctuation">,</span> <span class="token constant">PASSWORD</span><span class="token punctuation">)</span> <span class="token comment">// Imports an encrypted private key</span>
+</code></pre></div><h2 id="create-a-new-account"><a href="#create-a-new-account" class="header-anchor">#</a> Create a new account</h2> <p>Accounts can be created easily and safety on the frontend. By calling the static method <code>create</code> and <code>import</code>, we will get an instance of the <code>Account</code> class. If you provide a password, the account private key will be encrypted</p> <h4 id="new-account"><a href="#new-account" class="header-anchor">#</a> New account</h4> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span>Account<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@nuls.io/account'</span>
+
+<span class="token keyword">const</span> fooAccount <span class="token operator">=</span> Account<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>fooAccount<span class="token punctuation">)</span>
+<span class="token comment">// { </span>
+<span class="token comment">//   chainId: 1,</span>
+<span class="token comment">//   address: 'NULSd6HgaHd7xnnHFkAh8VEAdDu4PyWFyRvw2',</span>
+<span class="token comment">//   publicKey: '02d91bf495f244c6354ccb5e7c6a0a5e77f4356566b74a87ff8aab40d46b6d260b',</span>
+<span class="token comment">//   privateKey: '35daf771d7591e0a3021031efd561e97e2049bfe0ed7dd1a585330c721077d2b'</span>
+<span class="token comment">// }</span>
+</code></pre></div><h4 id="new-encrypted-account"><a href="#new-encrypted-account" class="header-anchor">#</a> New encrypted account</h4> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span>Account<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@nuls.io/account'</span>
+
+<span class="token keyword">const</span> barAccount <span class="token operator">=</span> Account<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token constant">PASSWORD</span><span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>barAccount<span class="token punctuation">)</span>
+<span class="token comment">// {</span>
+<span class="token comment">//   chainId: 1,</span>
+<span class="token comment">//   address: 'NULSd6HggwmkquJfskMhZ9iwJg4B724kvWiR4',</span>
+<span class="token comment">//   publicKey: '03500b0de9ace8271ed447b482ce4f59c5d0fe02c61eadb340e2542025e5efaf68',</span>
+<span class="token comment">//   encryptedPrivateKey: 'c690d47a39bac5626814828fad901a674d58fb1d0c48680d808d0764c6dac98c567795046365f60c8d87ba5eec48fbd9'</span>
+<span class="token comment">// }</span>
+</code></pre></div><h4 id="fetch-account-balance"><a href="#fetch-account-balance" class="header-anchor">#</a> Fetch account balance</h4> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span>ChainId<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@nuls.io/core'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span>Account<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@nuls.io/account'</span>
+
+<span class="token keyword">const</span> balance <span class="token operator">=</span> <span class="token keyword">await</span> Account<span class="token punctuation">.</span><span class="token function">getBalance</span><span class="token punctuation">(</span><span class="token string">'tNULSeBaMmTkgNtWA1jnyKBYKUC3vV4Sa57ovL'</span><span class="token punctuation">)</span>
+
+<span class="token comment">// OR</span>
+
+<span class="token keyword">const</span> account <span class="token operator">=</span> Account<span class="token punctuation">.</span><span class="token function">import</span><span class="token punctuation">(</span><span class="token constant">PRIVATE_KEY</span><span class="token punctuation">,</span> ChainId<span class="token punctuation">.</span>Testnet<span class="token punctuation">)</span>
+<span class="token keyword">const</span> balance <span class="token operator">=</span> <span class="token keyword">await</span> account<span class="token punctuation">.</span><span class="token function">getBalance</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>balance<span class="token punctuation">)</span>
+<span class="token comment">// {</span>
+<span class="token comment">//   'totalBalance': 403918380062471,</span>
+<span class="token comment">//   'balance': 283917780062471,</span>
+<span class="token comment">//   'timeLock': 0,</span>
+<span class="token comment">//   'consensusLock': 120000600000000,</span>
+<span class="token comment">//   'freeze': 120000600000000,</span>
+<span class="token comment">//   'nonce': '6ed19c0455e5bce8',</span>
+<span class="token comment">//   'nonceType': 1</span>
+<span class="token comment">// }</span>
+</code></pre></div><h2 id="import-an-account"><a href="#import-an-account" class="header-anchor">#</a> Import an account</h2> <p>You can import an existing account by using the private key. The private key can be encrypted or decrypted,
+if you provide just the private key it must be decrypted, if you provide an encrypted private key together with its password it will decrypt the private key, if you provide a password and a decrypted private key it will import it and encrypt the private key.</p> <h4 id="unencrypted-plain-text-private-key"><a href="#unencrypted-plain-text-private-key" class="header-anchor">#</a> Unencrypted (plain text) Private Key</h4> <p>You can provide the unencrypted private key in plain text as the first <code>param</code> of the <code>import</code> method</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span>Account<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@nuls.io/account'</span>
+
+<span class="token keyword">const</span> account <span class="token operator">=</span> Account<span class="token punctuation">.</span><span class="token function">import</span><span class="token punctuation">(</span><span class="token string">'2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b'</span><span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>account<span class="token punctuation">.</span><span class="token function">toObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment">// {</span>
+<span class="token comment">//   chainId: 1,</span>
+<span class="token comment">//   address: 'NULSd6HghvH1HwtTxPNoFLL4LhA1SWTmNyTdC',</span>
+<span class="token comment">//   publicKey: '033f4031d22289befe017472bb954b59d9ba043ce67fbc60c50ee3a48c56b89b1f',</span>
+<span class="token comment">//   privateKey: '2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b'</span>
+<span class="token comment">// }</span>
+</code></pre></div><h4 id="encrypted-private-key"><a href="#encrypted-private-key" class="header-anchor">#</a> Encrypted Private Key</h4> <p>If the private key you're providing is encrypted with a password, you can provide the
+password as the third <code>param</code> in plain text and the encrypted private key as the first one.</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span>ChainId<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@nuls.io/core'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span>Account<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@nuls.io/account'</span>
+
+<span class="token keyword">const</span> account <span class="token operator">=</span> Account<span class="token punctuation">.</span><span class="token function">import</span><span class="token punctuation">(</span>
+  <span class="token string">'3b15ee33df6669b13a3ea5ff0532e8570a9a92d8fd8f85de464ac15ecda5545b282c68214397198ec8fc40c52dcd2846'</span><span class="token punctuation">,</span>
+  ChainId<span class="token punctuation">.</span>Mainnet<span class="token punctuation">,</span>
+  <span class="token string">'Password1!'</span>
+<span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>account<span class="token punctuation">.</span><span class="token function">toObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment">// {</span>
+<span class="token comment">//   chainId: 1,</span>
+<span class="token comment">//   address: 'NULSd6HghvH1HwtTxPNoFLL4LhA1SWTmNyTdC',</span>
+<span class="token comment">//   publicKey: '033f4031d22289befe017472bb954b59d9ba043ce67fbc60c50ee3a48c56b89b1f',</span>
+<span class="token comment">//   encryptedPrivateKey: '3b15ee33df6669b13a3ea5ff0532e8570a9a92d8fd8f85de464ac15ecda5545b282c68214397198ec8fc40c52dcd2846'</span>
+<span class="token comment">// }</span>
+</code></pre></div><h4 id="encrypting-an-unencrypted-plain-text-private-key"><a href="#encrypting-an-unencrypted-plain-text-private-key" class="header-anchor">#</a> Encrypting an Unencrypted (plain text) Private Key</h4> <p>If you want to encrypt a private key you can provide the password and unecrypted private key,
+the account will then be imported and encrypted.</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span>ChainId<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@nuls.io/core'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span>Account<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@nuls.io/account'</span>
+
+<span class="token keyword">const</span> account <span class="token operator">=</span> Account<span class="token punctuation">.</span><span class="token function">import</span><span class="token punctuation">(</span>
+  <span class="token string">'2d5ed8706749f6d7c096772a075c027f56fae4148bacbf6c78b59df09f84b07b'</span><span class="token punctuation">,</span>
+  ChainId<span class="token punctuation">.</span>Mainnet<span class="token punctuation">,</span>
+  <span class="token string">'Password1!'</span>
+<span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>account<span class="token punctuation">.</span><span class="token function">toObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment">// {</span>
+<span class="token comment">//   chainId: 1,</span>
+<span class="token comment">//   address: 'NULSd6HghvH1HwtTxPNoFLL4LhA1SWTmNyTdC',</span>
+<span class="token comment">//   publicKey: '033f4031d22289befe017472bb954b59d9ba043ce67fbc60c50ee3a48c56b89b1f',</span>
+<span class="token comment">//   encryptedPrivateKey: '3b15ee33df6669b13a3ea5ff0532e8570a9a92d8fd8f85de464ac15ecda5545b282c68214397198ec8fc40c52dcd2846'</span>
+<span class="token comment">// }</span>
+</code></pre></div><h2 id="address-type-and-chainid"><a href="#address-type-and-chainid" class="header-anchor">#</a> Address Type and ChainId</h2> <p>You can create or import accounts under different address types or chain ids by providing them as parameters
+into the <code>create</code> or <code>import</code> functions as such:</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span>ChainId<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@nuls.io/core'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span>Account<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@nuls.io/account'</span>
+
+<span class="token keyword">const</span> fooAccount <span class="token operator">=</span> Account<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>ChainId<span class="token punctuation">.</span>Mainnet<span class="token punctuation">,</span> <span class="token constant">PASSWORD</span><span class="token punctuation">,</span> <span class="token constant">CHAIN_ID</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> barAccount <span class="token operator">=</span> Account<span class="token punctuation">.</span><span class="token function">import</span><span class="token punctuation">(</span><span class="token constant">PRIVATE_KEY</span><span class="token punctuation">,</span> ChainId<span class="token punctuation">.</span>Mainnet<span class="token punctuation">,</span> <span class="token constant">PASSWORD</span><span class="token punctuation">,</span> <span class="token constant">CHAIN_ID</span><span class="token punctuation">)</span>
+</code></pre></div></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/CCC-NULS/nulsjs/edit/master/guide/account/README.md" target="_blank" rel="noopener noreferrer">Edit this page</a> <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></div> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/guide/core/" class="prev">Core</a></span> <span class="next"><a href="/guide/transaction/">Basic concepts</a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.d33a93c4.js" defer></script><script src="/assets/js/2.ad99787b.js" defer></script><script src="/assets/js/7.d0de8275.js" defer></script>
+  </body>
+</html>

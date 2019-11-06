@@ -6,3 +6,5 @@ config/config.json
 .DS_Store
 coverage/
 t.js
+
+.vscode

@@ -1,0 +1,60 @@
+language: node_js
+node_js:
+  - "10"
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+
+stages:
+  - lint
+  - test
+  - build
+  - docs deploy
+  - npm deploy
+
+branches:
+  only:
+    - develop
+    - release/*
+    - master
+
+cache: npm
+
+install:
+  - npm install
+
+jobs:
+  include:
+    - stage: lint
+      script: npm run lint
+
+    - stage: test
+      script: npm run test:ci
+
+    - stage: build
+      script: npm run build
+
+    - stage: docs deploy
+      if: branch = master
+      script: npm run docs:build
+      deploy:
+        provider: pages
+        skip-cleanup: true
+        keep-history: true
+        github-token: $GITHUB_KEY
+        local_dir: docs/.vuepress/dist
+        target-branch: master
+
+    # - stage: npm deploy
+    #   if: branch = master    
+    #   deploy:
+    #     provider: npm
+    #     api_key: $NPM_KEY
+
+notifications:
+  email: false

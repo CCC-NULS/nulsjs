@@ -6,6 +6,6 @@ api:
   url: http://beta.nulscan.io
   base: /
   timeout: 8000
-  maxPagesize: 1000
+  maxPagesize: 100 # 100 is the MAX
   rpc:
     base: /api/

@@ -3,7 +3,8 @@ module:
   name: core
 api:
   # url: https://public1.nuls.io
-  url: http://beta.nulscan.io
+  # url: http://beta.nulscan.io
+  url: https://nulscan.io
   base: /
   timeout: 8000
   maxPagesize: 100 # 100 is the MAX

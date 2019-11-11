@@ -1,6 +1,5 @@
 import {
   RpcApiService,
-  ChainId,
   ApiServiceConfig,
   CommonNulsApiListResponse,
   CommonSuccessResponseBody,

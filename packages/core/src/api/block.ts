@@ -1,7 +1,6 @@
 import {CommonNulsApiListResponse} from './model'
 import {CommonSuccessResponseBody, ApiServiceConfig} from './api'
 import {RpcApiService} from './rpc'
-import {ChainId} from '../common'
 
 export interface BlockHeaderListItem {
   height: number

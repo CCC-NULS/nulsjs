@@ -11,7 +11,7 @@ import {AliasTransaction} from '@nuls.io/transaction'
 const fromAddress = 'NULSd6HgaHd7xnnHFkAh8VEAdDu4PyWFyRvw2'
 const privateKey = '35daf771d7591e0a3021031efd561e97e2049bfe0ed7dd1a585330c721077d2b'
 
-const tx = AliasTransaction
+const tx = new AliasTransaction()
   .from(fromAddress)
   .alias('my_alias')
   .sign(privateKey)

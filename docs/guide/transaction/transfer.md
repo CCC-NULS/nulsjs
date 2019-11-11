@@ -18,8 +18,9 @@ const anotherAddress = 'NULSd6HgdemcQDAaiEJWq9ESMhtUHXRsNJ4KM'
 
 const config = {
   api: {
-    host: 'https://nulscan.io',
-    apiBase: '/api/'
+    url: 'https://nulscan.io',
+    apiBase: '/api/',
+    chainId: 1
   }
 }
 

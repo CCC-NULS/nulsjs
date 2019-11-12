@@ -38,7 +38,7 @@ export class NulsSerializer {
   }
 
   public writeBoolean(v: boolean) {
-    return this.writeInt8(v ? 1 : 0)
+    return this.writeUInt(v ? 1 : 0, 1)
   }
 
   public writeBigInt(n: number | BN) {
@@ -61,45 +61,41 @@ export class NulsSerializer {
     return Buffer.concat(this.bufs, this.size)
   }
 
-  public write(buf: Buffer) {
+  public write(buf: Buffer): this {
     this.bufs.push(buf)
     this.size += buf.length
     return this
   }
 
-  public writeInt8(n: number) {
-    const buf = Buffer.allocUnsafe(1)
-    buf.writeInt8(n, 0)
+  public writeUInt(
+    value: number,
+    count: number = 1,
+    endian: 'le' | 'be' = 'le',
+  ): this {
+    const buf = Buffer.allocUnsafe(count)
+
+    if (endian === 'le') {
+      buf.writeUIntLE(value, 0, count)
+    } else {
+      buf.writeUIntBE(value, 0, count)
+    }
+
     return this.write(buf)
   }
 
-  public writeUInt16BE(n: number) {
-    const buf = Buffer.allocUnsafe(2)
-    buf.writeUInt16BE(n, 0)
-    return this.write(buf)
-  }
+  public writeInt(
+    value: number,
+    count: number = 1,
+    endian: 'le' | 'be' = 'le',
+  ): this {
+    const buf = Buffer.allocUnsafe(count)
 
-  public writeUInt16LE(n: number) {
-    const buf = Buffer.allocUnsafe(2)
-    buf.writeUInt16LE(n, 0)
-    return this.write(buf)
-  }
+    if (endian === 'le') {
+      buf.writeIntLE(value, 0, count)
+    } else {
+      buf.writeIntBE(value, 0, count)
+    }
 
-  public writeUInt32BE(n: number) {
-    const buf = Buffer.allocUnsafe(4)
-    buf.writeUInt32BE(n, 0)
-    return this.write(buf)
-  }
-
-  public writeInt32LE(n: number) {
-    const buf = Buffer.allocUnsafe(4)
-    buf.writeInt32LE(n, 0)
-    return this.write(buf)
-  }
-
-  public writeUInt32LE(n: number) {
-    const buf = Buffer.allocUnsafe(4)
-    buf.writeUInt32LE(n, 0)
     return this.write(buf)
   }
 
@@ -137,7 +133,7 @@ export class NulsSerializer {
       buf.writeUInt32LE(n, 1)
     } else {
       const s = new NulsSerializer()
-      s.writeInt8(255)
+      s.writeUInt(255, 1)
       s.writeInt64LE(new BN(n + ''))
       buf = s.concat()
       // buf = Buffer.allocUnsafe(1 + 8)

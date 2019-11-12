@@ -355,8 +355,8 @@ export abstract class BaseTransaction {
 
   protected _toBytes(): Buffer {
     return new NulsSerializer()
-      .writeUInt16LE(this._type)
-      .writeUInt32LE(this._time)
+      .writeUInt(this._type, 2)
+      .writeUInt(this._time, 4)
       .writeString(this._remark)
       .writeBytesWithLength(this._txData.toBytes())
       .writeBytesWithLength(this._coinData.toBytes())
@@ -366,8 +366,8 @@ export abstract class BaseTransaction {
 
   protected _toBytesForHash(): Buffer {
     return new NulsSerializer()
-      .writeUInt16LE(this._type)
-      .writeUInt32LE(this._time)
+      .writeUInt(this._type, 2)
+      .writeUInt(this._time, 4)
       .writeString(this._remark)
       .writeBytesWithLength(this._txData.toBytes())
       .writeBytesWithLength(this._coinData.toBytes())

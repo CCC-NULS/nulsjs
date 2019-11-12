@@ -51,8 +51,8 @@ export class Coin {
 
     return new NulsSerializer()
       .writeBytesWithLength(addressBytes)
-      .writeUInt16LE(this._chainId)
-      .writeUInt16LE(this._assetId)
+      .writeUInt(this._chainId, 2)
+      .writeUInt(this._assetId, 2)
       .writeBigInt(this._amount)
       .toBuffer()
   }
@@ -125,7 +125,7 @@ export class CoinInput extends Coin {
     return new NulsSerializer()
       .write(coinBytes)
       .writeBytesWithLength(nonceBytes)
-      .writeInt8(this._locked)
+      .writeInt(this._locked, 1)
       .toBuffer()
   }
 

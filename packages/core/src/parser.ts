@@ -32,7 +32,7 @@ export class NulsParser {
     return bytes
   }
 
-  public readUInt(count: number, endian: 'le' | 'be' = 'le'): number {
+  public readUInt(count: number = 1, endian: 'le' | 'be' = 'le'): number {
     let res
 
     if (endian === 'le') {
@@ -45,7 +45,7 @@ export class NulsParser {
     return res
   }
 
-  public readInt(count: number, endian: 'le' | 'be' = 'le'): number {
+  public readInt(count: number = 1, endian: 'le' | 'be' = 'le'): number {
     let res
 
     if (endian === 'le') {

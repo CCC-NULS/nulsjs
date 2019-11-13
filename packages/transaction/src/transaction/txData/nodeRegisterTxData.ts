@@ -9,16 +9,14 @@ export interface NodeRegisterTxDataObject {
   commissionRate: number
 }
 
-export class NodeRegisterTxData extends BaseTxData {
+export class NodeRegisterTxData implements BaseTxData {
   public constructor(
     public _deposit: number = 0,
     public _agentAddress: string = '',
     public _packingAddress: string = '',
     public _rewardAddress: string = '',
     public _commissionRate: number = 0,
-  ) {
-    super()
-  }
+  ) {}
 
   public fromBytes(bytes: Buffer): NodeRegisterTxData {
     const parser = new NulsParser(bytes)

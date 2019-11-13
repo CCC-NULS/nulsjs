@@ -2,7 +2,7 @@ import {BaseTxData} from './baseTxData'
 
 export type TransferTxDataObject = null
 
-export class TransferTxData extends BaseTxData {
+export class TransferTxData implements BaseTxData {
   public fromBytes(bytes: Buffer): TransferTxData {
     return this
   }

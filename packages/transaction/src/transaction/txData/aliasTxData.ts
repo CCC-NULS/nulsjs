@@ -6,10 +6,11 @@ export interface AliasTxDataObject {
   alias: string
 }
 
-export class AliasTxData extends BaseTxData {
-  public constructor(public _address: string = '', public _alias: string = '') {
-    super()
-  }
+export class AliasTxData implements BaseTxData {
+  public constructor(
+    public _address: string = '',
+    public _alias: string = '',
+  ) {}
 
   public fromBytes(bytes: Buffer): AliasTxData {
     const parser = new NulsParser(bytes)

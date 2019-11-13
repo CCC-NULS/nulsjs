@@ -1,7 +1,7 @@
 export type TxDataObject = any
 
-export abstract class BaseTxData {
-  public abstract fromBytes(bytes: Buffer): BaseTxData
-  public abstract toObject(): TxDataObject
-  public abstract toBytes(): Buffer
+export interface BaseTxData {
+  fromBytes(bytes: Buffer): BaseTxData
+  toObject(): TxDataObject
+  toBytes(): Buffer
 }

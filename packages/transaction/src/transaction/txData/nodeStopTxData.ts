@@ -5,10 +5,8 @@ export interface NodeStopTxDataObject {
   agentHash: string
 }
 
-export class NodeStopTxData extends BaseTxData {
-  public constructor(public _agentHash: string = '') {
-    super()
-  }
+export class NodeStopTxData implements BaseTxData {
+  public constructor(public _agentHash: string = '') {}
 
   public fromBytes(bytes: Buffer): NodeStopTxData {
     const parser = new NulsParser(bytes)

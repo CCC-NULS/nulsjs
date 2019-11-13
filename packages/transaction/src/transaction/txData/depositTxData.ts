@@ -7,14 +7,12 @@ export interface DepositTxDataObject {
   nodeHash: string
 }
 
-export class DepositTxData extends BaseTxData {
+export class DepositTxData implements BaseTxData {
   public constructor(
     public _deposit: number = 0,
     public _address: string = '',
     public _nodeHash: string = '',
-  ) {
-    super()
-  }
+  ) {}
 
   public fromBytes(bytes: Buffer): DepositTxData {
     const parser = new NulsParser(bytes)

@@ -5,10 +5,8 @@ export interface DepositCancelTxDataObject {
   depositHash: string
 }
 
-export class DepositCancelTxData extends BaseTxData {
-  public constructor(public _depositHash: string = '') {
-    super()
-  }
+export class DepositCancelTxData implements BaseTxData {
+  public constructor(public _depositHash: string = '') {}
 
   public fromBytes(bytes: Buffer): DepositCancelTxData {
     const parser = new NulsParser(bytes)

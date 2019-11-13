@@ -3,7 +3,46 @@ import {NulsSerializer, NulsParser} from '@nuls.io/core'
 export type ContractArg = null | string[]
 export type ContractArgs = ContractArg[]
 
-export interface ContractTxDataObject {
+export interface ContractTxDataBaseObject {
+  sender: string
+  contractAddress: string
+}
+
+export class ContractTxDataBase {
+  public constructor(
+    public _sender: string = '',
+    public _contractAddress: string = '',
+  ) {}
+
+  public senderFromBytes(parser: NulsParser): this {
+    this._sender = parser.readAddress()
+    return this
+  }
+
+  public contractAddressFromBytes(parser: NulsParser): this {
+    this._contractAddress = parser.readAddress()
+    return this
+  }
+
+  public toObject(): ContractTxDataBaseObject {
+    return {
+      sender: this._sender,
+      contractAddress: this._contractAddress,
+    }
+  }
+
+  public senderToBytes(serial: NulsSerializer): this {
+    serial.writeAddress(this._sender)
+    return this
+  }
+
+  public contractAddressToBytes(serial: NulsSerializer): this {
+    serial.writeAddress(this._contractAddress)
+    return this
+  }
+}
+
+export interface ContractTxDataObject extends ContractTxDataBaseObject {
   sender: string
   contractAddress: string
   gasLimit: number
@@ -11,23 +50,13 @@ export interface ContractTxDataObject {
   args: ContractArgs
 }
 
-export class ContractTxData {
+export class ContractTxData extends ContractTxDataBase {
   public constructor(
-    public _sender: string = '',
-    public _contractAddress: string = '',
     public _gasLimit: number = 0,
     public _gasPrice: number = 0,
     public _args: ContractArgs = [],
-  ) {}
-
-  public senderFromBytes(parser: NulsParser): ContractTxData {
-    this._sender = parser.readAddress()
-    return this
-  }
-
-  public contractAddressFromBytes(parser: NulsParser): ContractTxData {
-    this._contractAddress = parser.readAddress()
-    return this
+  ) {
+    super()
   }
 
   public gasLimitFromBytes(parser: NulsParser): ContractTxData {
@@ -67,23 +96,14 @@ export class ContractTxData {
   }
 
   public toObject(): ContractTxDataObject {
+    const obj = super.toObject()
+
     return {
-      sender: this._sender,
-      contractAddress: this._contractAddress,
+      ...obj,
       gasLimit: this._gasLimit,
       gasPrice: this._gasPrice,
       args: this._args,
     }
-  }
-
-  public senderToBytes(serial: NulsSerializer): this {
-    serial.writeAddress(this._sender)
-    return this
-  }
-
-  public contractAddressToBytes(serial: NulsSerializer): this {
-    serial.writeAddress(this._contractAddress)
-    return this
   }
 
   public gasLimitToBytes(serial: NulsSerializer): this {

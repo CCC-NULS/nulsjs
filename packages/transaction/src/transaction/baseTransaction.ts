@@ -61,7 +61,7 @@ export interface TransactionObject {
 export abstract class BaseTransaction {
   private _p: Promise<any> = Promise.resolve()
 
-  protected _hash: Buffer = Buffer.from([])
+  protected _hash: string = ''
   protected _type!: TransactionType
   protected _time: number = Math.floor(Date.now() / 1000)
   protected _remark: string = ''
@@ -83,10 +83,16 @@ export abstract class BaseTransaction {
   }
   protected _txApi: TransactionApi
 
+  public static fromBytes<T extends BaseTransaction>(bytes: string): T
+  public static fromBytes<T extends BaseTransaction>(bytes: Buffer): T
   public static fromBytes<T extends BaseTransaction>(
     this: TransactionClass<T>,
-    bytes: Buffer,
+    bytes: Buffer | string,
   ): T {
+    if (typeof bytes === 'string') {
+      bytes = Buffer.from(bytes, 'hex')
+    }
+
     const parser = new NulsParser(bytes)
     const tx = new this()
 
@@ -130,7 +136,7 @@ export abstract class BaseTransaction {
       const hash = this._getHash()
 
       return {
-        hash: hash.toString('hex'),
+        hash,
         type: this._type,
         blockHeight: this._blockHeight,
         time: this._time,
@@ -168,7 +174,6 @@ export abstract class BaseTransaction {
     return this
   }
 
-  // TODO: Implement all kinds of signature (P2PKH, P2PSH, etc...)
   public sign(privateKey: string): this {
     this.await(async () => {
       this._validate()
@@ -176,7 +181,7 @@ export abstract class BaseTransaction {
       const skBuf = Buffer.from(privateKey, 'hex')
       const pkBuf = deriveECPublicKey(skBuf)
 
-      const hash = this._getHash()
+      const hash = Buffer.from(this._getHash(), 'hex')
       const sigBuf = signEC(hash, skBuf)
 
       this._signature = new NulsSerializer()
@@ -300,14 +305,14 @@ export abstract class BaseTransaction {
     return this
   }
 
-  protected _getHash(): Buffer {
+  protected _getHash(): string {
     if (this._hash.length > 0) {
       return this._hash
     }
 
     let bytes = this._toBytesForHash()
 
-    this._hash = sha256(sha256(bytes))
+    this._hash = sha256(sha256(bytes)).toString('hex')
     return this._hash
   }
 

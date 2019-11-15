@@ -1,4 +1,4 @@
-import {NulsSerializer, NulsParser} from '@nuls.io/core'
+import {NulsSerializer, NulsParser, BlockVersion} from '@nuls.io/core'
 
 export interface BlockHeaderExtendObject {
   roundIndex: number
@@ -20,7 +20,7 @@ export class BlockHeaderExtend {
   protected _roundStartTime: number = -1
   protected _packingIndexOfRound: number = -1
   protected _mainVersion: number = -1
-  protected _blockVersion: number = -1
+  protected _blockVersion: number = BlockVersion.NotDefined
   protected _effectiveRatio: number = -1
   protected _continuousIntervalCount: number = -1
   protected _stateRoot: Buffer = Buffer.from([])

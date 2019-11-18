@@ -27,8 +27,8 @@ export class BlockHeaderExtend {
   protected _seed: Buffer = Buffer.from([])
   protected _nextSeedHash: Buffer = Buffer.from([])
 
-  public static fromBytes(bytes: Buffer): BlockHeaderExtend {
-    const parser = new NulsParser(bytes)
+  public static fromBytes(bytes: Buffer | NulsParser): BlockHeaderExtend {
+    const parser = bytes instanceof NulsParser ? bytes : new NulsParser(bytes)
     const extend = new BlockHeaderExtend()
 
     extend._roundIndex = parser.readUInt(4)
@@ -41,11 +41,9 @@ export class BlockHeaderExtend {
     extend._continuousIntervalCount = parser.readUInt(2)
     extend._stateRoot = parser.readBytesWithLength()
 
-    const rest = parser.slice()
-
-    if (rest.length >= 40) {
-      extend._seed = rest.slice(0, 32)
-      extend._nextSeedHash = rest.slice(32, 40)
+    if (parser.length() >= 40) {
+      extend._seed = parser.read(32)
+      extend._nextSeedHash = parser.read(8)
     }
 
     return extend

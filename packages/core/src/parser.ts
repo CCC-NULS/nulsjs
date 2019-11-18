@@ -118,10 +118,10 @@ export class NulsParser {
     return this.buf.length - this.offset
   }
 
-  public slice(length?: number): Buffer {
+  public read(length?: number): Buffer {
     const n = length ? this.offset + length : this.buf.length
     const bytes = this.buf.slice(this.offset, n)
-    this.offset += n - this.offset
+    this.offset += bytes.length
     return bytes
   }
 

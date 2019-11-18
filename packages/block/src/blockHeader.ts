@@ -27,8 +27,8 @@ export class BlockHeader {
   protected _extend: BlockHeaderExtend = new BlockHeaderExtend()
   protected _signature: Buffer = Buffer.from([])
 
-  public static fromBytes(bytes: Buffer): BlockHeader {
-    const parser = new NulsParser(bytes)
+  public static fromBytes(bytes: Buffer | NulsParser): BlockHeader {
+    const parser = bytes instanceof NulsParser ? bytes : new NulsParser(bytes)
     const header = new BlockHeader()
 
     header._preHash = parser.readHash()
@@ -40,7 +40,7 @@ export class BlockHeader {
     const extendBytes = parser.readBytesWithLength()
     header._extend = BlockHeaderExtend.fromBytes(extendBytes)
 
-    header._signature = parser.slice()
+    header._signature = parser.read()
 
     return header
   }

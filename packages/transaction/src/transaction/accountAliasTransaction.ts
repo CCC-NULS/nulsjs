@@ -9,12 +9,12 @@ import {
 import {MIN_FEE_PRICE_1024_BYTES} from './fee'
 import {AliasTxData} from './txData/aliasTxData'
 
-export interface AliasTransactionObject extends TransactionObject {
+export interface AccountAliasTransactionObject extends TransactionObject {
   txData: AliasTxData
 }
 
-export class AliasTransaction extends BaseTransaction {
-  protected static className = AliasTransaction
+export class AccountAliasTransaction extends BaseTransaction {
+  protected static className = AccountAliasTransaction
   protected static AliasAmount = aliasTxAmount
 
   protected _type = TransactionType.AccountAlias
@@ -65,8 +65,11 @@ export class AliasTransaction extends BaseTransaction {
       }
     }
 
-    await this._addOutput(blackHoleAddress, AliasTransaction.AliasAmount)
+    await this._addOutput(blackHoleAddress, AccountAliasTransaction.AliasAmount)
 
-    await this._addInput(this._txData._address, AliasTransaction.AliasAmount)
+    await this._addInput(
+      this._txData._address,
+      AccountAliasTransaction.AliasAmount,
+    )
   }
 }

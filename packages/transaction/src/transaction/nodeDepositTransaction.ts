@@ -9,12 +9,12 @@ import {
 import {MIN_FEE_PRICE_1024_BYTES} from './fee'
 import {DepositTxData} from './txData/depositTxData'
 
-export interface DepositTransactionObject extends TransactionObject {
+export interface NodeDepositTransactionObject extends TransactionObject {
   txData: DepositTxData
 }
 
-export class DepositTransaction extends BaseTransaction {
-  protected static className = DepositTransaction
+export class NodeDepositTransaction extends BaseTransaction {
+  protected static className = NodeDepositTransaction
   protected static ConsensusLocktime = consensusLocktime
 
   protected _type = TransactionType.NodeDeposit
@@ -75,7 +75,7 @@ export class DepositTransaction extends BaseTransaction {
     await this._addOutput(
       this._txData._address,
       this._txData._deposit,
-      DepositTransaction.ConsensusLocktime,
+      NodeDepositTransaction.ConsensusLocktime,
     )
 
     await this._addInput(this._txData._address, this._txData._deposit)

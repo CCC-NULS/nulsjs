@@ -6,12 +6,12 @@ The alias transaction allow you to give an alias to one account by paying a __fi
 - `".alias(alias: string)"` The _alias_ as plain text
 
 ```js
-import {AliasTransaction} from '@nuls.io/transaction'
+import {AccountAliasTransaction} from '@nuls.io/transaction'
 
 const fromAddress = 'NULSd6HgaHd7xnnHFkAh8VEAdDu4PyWFyRvw2'
 const privateKey = '35daf771d7591e0a3021031efd561e97e2049bfe0ed7dd1a585330c721077d2b'
 
-const tx = new AliasTransaction()
+const tx = new AccountAliasTransaction()
   .from(fromAddress)
   .alias('my_alias')
   .sign(privateKey)

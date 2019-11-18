@@ -8,13 +8,13 @@ The deposit transaction or stake transaction is part of the NULS __proof of cred
 
 ```js
 import {nulsToNa} from '@nuls.io/core'
-import {DepositTransaction} from '@nuls.io/transaction'
+import {NodeDepositTransaction} from '@nuls.io/transaction'
 
 const stakerAddress = 'NULSd6HgaHd7xnnHFkAh8VEAdDu4PyWFyRvw2'
 const stakerPrivateKey = '35daf771d7591e0a3021031efd561e97e2049bfe0ed7dd1a585330c721077d2b'
 const nodeHash = 'ad2ad7bc2f5f002bf58a607f1ba3cb4cbb951d1df9a882ad9b68d76618838e7d'
 
-const tx = new DepositTransaction()
+const tx = new NodeDepositTransaction()
   .from(stakerAddress)
   .node(nodeHash)
   .deposit(nulsToNa(2000))

@@ -3,12 +3,12 @@ import {TransactionType, isValidHash, consensusLocktime} from '@nuls.io/core'
 import {MIN_FEE_PRICE_1024_BYTES} from './fee'
 import {DepositCancelTxData} from './txData/depositCancelTxData'
 
-export interface DepositCancelTransactionObject extends TransactionObject {
+export interface NodeDepositCancelTransactionObject extends TransactionObject {
   txData: DepositCancelTxData
 }
 
-export class DepositCancelTransaction extends BaseTransaction {
-  protected static className = DepositCancelTransaction
+export class NodeDepositCancelTransaction extends BaseTransaction {
+  protected static className = NodeDepositCancelTransaction
   protected static ConsensusLocktime = consensusLocktime
 
   protected _type = TransactionType.NodeDepositCancel
@@ -49,7 +49,8 @@ export class DepositCancelTransaction extends BaseTransaction {
     }
 
     const lockedOutput = data.coinTos.find(
-      output => output.lockTime === DepositCancelTransaction.ConsensusLocktime,
+      output =>
+        output.lockTime === NodeDepositCancelTransaction.ConsensusLocktime,
     )
 
     if (!lockedOutput) {

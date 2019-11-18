@@ -4,8 +4,12 @@ import {
   NulsSerializer,
   signEC,
   NulsParser,
+  Address,
+  ChainId,
+  AddressType,
 } from '@nuls.io/core'
 import {BlockHeaderExtend} from './blockHeaderExtend'
+import {BlockSignature} from './blockSignature'
 
 export interface BlockHeaderObject {
   hash: string
@@ -14,6 +18,7 @@ export interface BlockHeaderObject {
   time: number
   height: number
   txCount: number
+  packingAddress: string
   signature: string
 }
 
@@ -27,7 +32,12 @@ export class BlockHeader {
   protected _extend: BlockHeaderExtend = new BlockHeaderExtend()
   protected _signature: Buffer = Buffer.from([])
 
-  public static fromBytes(bytes: Buffer | NulsParser): BlockHeader {
+  protected _packingAddress: string = ''
+
+  public static fromBytes(
+    bytes: Buffer | NulsParser,
+    chainId: ChainId = ChainId.Mainnet,
+  ): BlockHeader {
     const parser = bytes instanceof NulsParser ? bytes : new NulsParser(bytes)
     const header = new BlockHeader()
 
@@ -41,6 +51,13 @@ export class BlockHeader {
     header._extend = BlockHeaderExtend.fromBytes(extendBytes)
 
     header._signature = parser.read()
+
+    const signature = BlockSignature.fromBytes(header._signature).toObject()
+    header._packingAddress = Address.from(
+      chainId,
+      AddressType.Default,
+      Buffer.from(signature.publicKey, 'hex'),
+    ).address
 
     return header
   }
@@ -68,6 +85,7 @@ export class BlockHeader {
       height: this._height,
       txCount: this._txCount,
       ...obj,
+      packingAddress: this._packingAddress,
       signature: this._signature.toString('hex'),
     }
   }

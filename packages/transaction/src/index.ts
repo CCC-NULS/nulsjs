@@ -1,5 +1,6 @@
 export * from './api'
 export * from './transaction/baseTransaction'
+export * from './transaction/transaction'
 export * from './transaction/transferTransaction'
 export * from './transaction/accountAliasTransaction'
 export * from './transaction/nodeDepositTransaction'

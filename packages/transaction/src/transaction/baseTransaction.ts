@@ -83,17 +83,15 @@ export abstract class BaseTransaction {
   }
   protected _txApi: TransactionApi
 
-  public static fromBytes<T extends BaseTransaction>(bytes: string): T
-  public static fromBytes<T extends BaseTransaction>(bytes: Buffer): T
   public static fromBytes<T extends BaseTransaction>(
     this: TransactionClass<T>,
-    bytes: Buffer | string,
+    bytes: Buffer | string | NulsParser,
   ): T {
     if (typeof bytes === 'string') {
       bytes = Buffer.from(bytes, 'hex')
     }
 
-    const parser = new NulsParser(bytes)
+    const parser = bytes instanceof NulsParser ? bytes : new NulsParser(bytes)
     const tx = new this()
 
     tx._type = parser.readUInt(2)

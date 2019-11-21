@@ -6,12 +6,14 @@ import {NodeDepositTransaction} from './nodeDepositTransaction'
 import {NodeDepositCancelTransaction} from './nodeDepositCancelTransaction'
 
 export class Transaction {
-  public static fromBytes(bytes: Buffer | string): BaseTransaction {
+  public static fromBytes(
+    bytes: Buffer | string | NulsParser,
+  ): BaseTransaction {
     if (typeof bytes === 'string') {
       bytes = Buffer.from(bytes, 'base64')
     }
 
-    const parser = new NulsParser(bytes)
+    const parser = bytes instanceof NulsParser ? bytes : new NulsParser(bytes)
     const type: TransactionType = parser.readUInt(2)
 
     switch (type) {
